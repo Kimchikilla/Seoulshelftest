@@ -6,7 +6,9 @@
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
   background-color: #ffffff;
 }
 
@@ -14,10 +16,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   padding: 16px;
   background-color: #ffffff;
+  overflow: hidden;
 }
 
 .login-box {
@@ -25,25 +28,41 @@ body {
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding: 20px;
-  margin: auto;
+  height: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.login-top {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .logo {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 500;
-  color: #000000;
-  margin-bottom: 32px;
+  color: #00A896;
+  letter-spacing: -0.5px;
   word-break: keep-all;
+  margin: 0;
 }
 
 .google-login-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   padding: 12px;
   border: 1px solid #e0e0e0;
@@ -51,6 +70,7 @@ body {
   background-color: #ffffff;
   color: #00A896;
   font-size: 1rem;
+  letter-spacing: -0.3px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -108,16 +128,17 @@ form {
 
 .login-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 10px;
   margin-top: 16px;
-  gap: 16px;
+  gap: 32px;
 }
 
 .login-footer a {
   color: #666666;
   text-decoration: none;
   font-size: 0.9rem;
+  letter-spacing: -0.3px;
   white-space: nowrap;
 }
 
@@ -135,12 +156,13 @@ form {
 
   .login-box {
     padding: 16px;
-    margin-top: 40px;
+    margin-top: 0;
+    height: 100vh;
   }
 
   .logo {
     font-size: 2rem;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   .google-login-btn,
@@ -157,9 +179,7 @@ form {
   }
 
   .login-footer {
-    margin-top: 24px;
-    justify-content: center;
-    gap: 32px;
+    margin-top: 16px;
   }
 }
 
@@ -195,17 +215,18 @@ form {
 @media screen and (max-height: 600px) {
   .login-container {
     padding: 16px;
-    min-height: auto;
   }
 
   .login-box {
-    margin: 16px auto;
+    height: auto;
+    min-height: 100vh;
     gap: 16px;
+    margin: 0 auto;
   }
 
   .logo {
     font-size: 1.8rem;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .form-group {
