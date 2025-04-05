@@ -4,7 +4,7 @@
   margin: 0 auto; /* 중앙 정렬 */
   background-color: #ffffff;
   min-height: calc(100vh - 64px); /* 헤더 높이만큼 빼줌 */
-  padding: 20px 16px;
+  padding: 20px 0;
 }
 
 .home-header {
@@ -35,75 +35,108 @@
 
 .book-section {
   width: 100%;
-  padding: 0 16px;
 }
 
 .section-title {
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 1000;
   color: #333;
-  margin-bottom: 16px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 0 16px;
   letter-spacing: -0.5px;
 }
 
 .book-list {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 20px 4px; /* 패딩 더 감소 */
+  gap: 4px; /* 간격 더 감소 */
+}
+
+.book-list::-webkit-scrollbar {
+  display: none;
 }
 
 .book-card {
+  flex: 0 0 33%; /* 카드 너비 더 감소 */
+  scroll-snap-align: center;
   display: flex;
-  gap: 16px;
-  padding: 16px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+  transform: scale(0.9);
+}
+
+.book-card.center {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .book-cover {
-  width: 100px;
-  height: 150px;
+  width: 210px; /* 1.5배 증가 (140px * 1.5) */
+  height: 305px; /* 1.5배 증가 (203px * 1.5) */
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 20px; /* 모서리 반경 증가 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
 }
 
 .book-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 16px; /* 간격 추가 */
+}
+
+.center .book-info {
+  opacity: 1;
 }
 
 .book-title {
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: 1.2rem; /* 0.9rem에서 증가 */
+  font-weight: 700; /* 500에서 증가 */
   color: #333;
-  margin-bottom: 4px;
+  margin-bottom: 6px; /* 간격 약간 증가 */
   letter-spacing: -0.5px;
+  line-height: 1.4;
 }
 
 .book-author {
-  font-size: 0.9rem;
+  font-size: 0.9rem; /* 저자명 크기도 약간 증가 */
   color: #666;
-  margin-bottom: 8px;
   letter-spacing: -0.3px;
 }
 
-.book-rating {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+/* 모바일 최적화 */
+@media screen and (max-width: 480px) {
+  .book-card {
+    flex: 0 0 38%; /* 모바일에서의 카드 너비 조정 */
+  }
 
-.stars {
-  color: #FFB800;
-  font-size: 0.9rem;
-}
+  .book-cover {
+    width: 180px; /* 모바일에서도 큰 크기 유지 */
+    height: 261px; /* 비율 유지 */
+  }
 
-.likes {
-  color: #666;
-  font-size: 0.9rem;
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .book-title {
+    font-size: 1.1rem; /* 모바일에서도 충분히 큰 크기 유지 */
+    font-weight: 700;
+  }
+
+  .book-author {
+    font-size: 0.85rem;
+  }
 }
 
 /* 반응형 디자인 */
@@ -113,4 +146,4 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
   }
-} 
+}
