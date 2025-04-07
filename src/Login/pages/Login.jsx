@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Login.css';
-import GoogleIcon from '../assets/google-icon.svg'; 
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
+import GoogleIcon from "../../assets/google-icon.svg";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: 로그인 로직 구현
-    console.log('로그인 시도:', formData);
+    console.log("로그인 시도:", formData);
   };
 
   const handleGoogleLogin = () => {
     // TODO: 실제 구글 로그인 로직 구현
-    console.log('구글 로그인 시도');
+    console.log("구글 로그인 시도");
     // 로그인 성공 후 메인 페이지로 이동
-    navigate('/home');
+    navigate("/home");
   };
 
   return (
@@ -45,18 +45,10 @@ const Login = () => {
           </button>
 
           <div className="login-footer">
-            <a 
-              href="https://accounts.google.com/signin/v2/recoveryidentifier" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
+            <a href="https://accounts.google.com/signin/v2/recoveryidentifier" target="_blank" rel="noopener noreferrer">
               ID / PW 찾기
             </a>
-            <a 
-              href="https://accounts.google.com/signup" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
+            <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">
               회원가입
             </a>
           </div>

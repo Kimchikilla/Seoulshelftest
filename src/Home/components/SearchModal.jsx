@@ -1,23 +1,13 @@
-import React, { useState } from 'react';
-import './SearchModal.css';
-import bookImage from '../assets/XL.jpg';
+import React, { useState } from "react";
+import "./SearchModal.css";
+import bookImage from "../../assets/Book/XL.jpg";
 
 const SearchModal = ({ isOpen, onClose }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([
-    '일하는 사람을 위한 철학',
-    '에릭 몽 시게티',
-    '철학'
-  ]);
+  const [recentSearches, setRecentSearches] = useState(["일하는 사람을 위한 철학", "에릭 몽 시게티", "철학"]);
 
-  const popularSearches = [
-    '베스트셀러',
-    '자기계발',
-    '소설',
-    '에세이',
-    '인문학'
-  ];
+  const popularSearches = ["베스트셀러", "자기계발", "소설", "에세이", "인문학"];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -36,27 +26,16 @@ const SearchModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className={`search-modal ${isOpen ? 'open' : ''}`}>
+    <div className={`search-modal ${isOpen ? "open" : ""}`}>
       <div className="search-header">
         <div className="search-input-wrapper">
-          <input
-            type="text"
-            placeholder="도서를 검색해보세요"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <input type="text" placeholder="도서를 검색해보세요" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
         <div className="header-buttons">
-          <button 
-            className="search-button"
-            onClick={handleSearch}
-          >
+          <button className="search-button" onClick={handleSearch}>
             <span className="material-icons">search</span>
           </button>
-          <button 
-            onClick={onClose} 
-            className="close-button"
-          >
+          <button onClick={onClose} className="close-button">
             <span className="material-icons">arrow_back</span>
           </button>
         </div>
@@ -67,15 +46,17 @@ const SearchModal = ({ isOpen, onClose }) => {
           <div className="search-results">
             <h3>검색 결과</h3>
             <div className="results-grid">
-              {Array(5).fill(null).map((_, index) => (
-                <div key={index} className="book-result">
-                  <img src={bookImage} alt="책 표지" />
-                  <div className="book-info">
-                    <h4>일하는 사람을 위한 철학</h4>
-                    <p>에릭 몽 시게티</p>
+              {Array(5)
+                .fill(null)
+                .map((_, index) => (
+                  <div key={index} className="book-result">
+                    <img src={bookImage} alt="책 표지" />
+                    <div className="book-info">
+                      <h4>일하는 사람을 위한 철학</h4>
+                      <p>에릭 몽 시게티</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         ) : (
@@ -87,10 +68,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                   <li key={index}>
                     <span className="material-icons">history</span>
                     {term}
-                    <button 
-                      className="delete-button"
-                      onClick={() => handleDeleteRecent(index)}
-                    >
+                    <button className="delete-button" onClick={() => handleDeleteRecent(index)}>
                       <span className="material-icons">close</span>
                     </button>
                   </li>

@@ -12,7 +12,7 @@
 .logout-button {
   width: 100%;
   padding: 20px 0;
-  margin-top: auto;  /* 맨 아래로 밀기 */
+  margin-top: auto; /* 맨 아래로 밀기 */
   margin-bottom: 60px;
   background: none;
   border: none;
@@ -45,7 +45,7 @@
   align-items: center;
   width: 100%;
   max-width: 300px;
-  height: 100%;  /* 컨테이너 전체 높이 사용 */
+  height: 100%; /* 컨테이너 전체 높이 사용 */
   padding: 20px 0;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .menu-nav a:hover {
-  color: #00A896;
+  color: #00a896;
 }
 
 .menu-item {
@@ -85,7 +85,7 @@
 
 .menu-item:hover {
   background-color: #f8f8f8;
-  color: #00A896;
+  color: #00a896;
 }
 
 .menu-item:last-child {

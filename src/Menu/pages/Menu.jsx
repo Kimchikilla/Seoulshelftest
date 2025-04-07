@@ -1,25 +1,27 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Menu.css';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Menu.css";
+import MenuHeader from "../components/MenuHeader";
 
 const Menu = () => {
   const navigate = useNavigate();
-  
+
   const menuItems = [
-    { title: '회원정보', path: '/profile' },
-    { title: '인기글', path: '/popular' },
-    { title: '홈', path: '/home' },
-    { title: '내가 쓴 글', path: '/my-posts' },
-    { title: '스크랩', path: '/scrap' },
+    { title: "회원정보", path: "/profile" },
+    { title: "인기글", path: "/popular" },
+    { title: "홈", path: "/home" },
+    { title: "내가 쓴 글", path: "/my-posts" },
+    { title: "스크랩", path: "/scrap" },
   ];
 
   const handleLogout = () => {
     // 로그아웃 처리 로직
-    navigate('/login');
+    navigate("/");
   };
 
   return (
     <div className="menu-container">
+      <MenuHeader />
       <nav className="menu-nav">
         {menuItems.map((item, index) => (
           <Link key={index} to={item.path} className="menu-item">

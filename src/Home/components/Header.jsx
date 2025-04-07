@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './Header.css';
-import SearchModal from './SearchModal';
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./Header.css";
+import SearchModal from "./SearchModal";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
-  const isMenuPage = location.pathname === '/menu';
-  
+
+  const isMenuPage = location.pathname === "/menu";
+
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -37,20 +37,14 @@ const Header = () => {
             <Link to="/home" className="header-title-link">
               <h1 className="header-title">Seoulshelf</h1>
             </Link>
-            <button 
-              className="search-button"
-              onClick={() => setIsSearchOpen(true)}
-            >
+            <button className="search-button" onClick={() => setIsSearchOpen(true)}>
               <span className="material-icons">search</span>
             </button>
           </>
         )}
       </header>
-      
-      <SearchModal 
-        isOpen={isSearchOpen} 
-        onClose={() => setIsSearchOpen(false)} 
-      />
+
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </div>
   );
 };
