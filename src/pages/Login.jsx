@@ -45,8 +45,20 @@ const Login = () => {
           </button>
 
           <div className="login-footer">
-            <a href="/forgot">ID / PW 찾기</a>
-            <a href="/register">회원가입</a>
+            <a 
+              href="https://accounts.google.com/signin/v2/recoveryidentifier" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              ID / PW 찾기
+            </a>
+            <a 
+              href="https://accounts.google.com/signup" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              회원가입
+            </a>
           </div>
         </div>
       </div>
@@ -54,4 +66,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
