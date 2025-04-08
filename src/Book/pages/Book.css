@@ -1,7 +1,18 @@
 .book-detail-container {
   padding-top: 64px;
-  min-height: 100vh;
   background-color: #fff;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  overflow-y: auto;
 }
 
 .book-detail {
@@ -9,6 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 60px;  /* 하단 여백 증가 */
 }
 
 .book-info-section {
@@ -48,68 +60,80 @@
   margin-bottom: 24px;
 }
 
-.rating-display {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.star {
-  color: #FFD700;
-  font-size: 24px;
-}
-
-.rating-text {
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.interaction-section {
-  width: 100%;
-  max-width: 500px;
+.rating-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
 }
 
-.want-to-read-button {
-  width: 100%;
+.rating-display {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px;
-  background-color: #fff;
-  border: 2px solid #00A896;
-  border-radius: 8px;
+}
+
+.star {
+  font-size: 32px;
+}
+
+.star.full {
   color: #00A896;
-  font-size: 1rem;
-  font-weight: 500;
+}
+
+.star.half {
+  color: #00A896;
+}
+
+.star.empty {
+  color: #E0E0E0;
+}
+
+.rating-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.rating-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.rating-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.action-icons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 20px;
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.want-to-read-button.active {
-  background-color: #00A896;
-  color: #fff;
+.action-button .material-icons {
+  font-size: 24px;
+  color: #666;
 }
 
-.comment-section {
-  width: 100%;
-}
-
-.comment-input {
-  width: 100%;
-  height: 120px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  resize: none;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.comment-input:focus {
-  outline: none;
-  border-color: #00A896;
+.action-text {
+  font-size: 12px;
+  color: #666;
 }
