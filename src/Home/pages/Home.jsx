@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import bookImage from "../../assets/Book/XL.jpg";
 import Header from "../components/Header";
 
 const Home = () => {
+  const navigate = useNavigate();
   // 초기 centerIndex를 0으로 변경 (첫 번째 아이템을 위해)
   const [centerIndex, setCenterIndex] = useState(0);
   const scrollRef = useRef(null);
@@ -84,6 +86,10 @@ const Home = () => {
     }
   }, [centerIndex]);
 
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
+
   return (
     <div className="home-container">
       <Header />
@@ -91,7 +97,11 @@ const Home = () => {
         <h2 className="section-title">지금 많이 읽고 있어요</h2>
         <div className="book-list" ref={scrollRef} onScroll={handleScroll}>
           {books.map((book, index) => (
-            <div key={book.id} className={`book-card ${index === centerIndex ? "center" : ""}`}>
+            <div 
+              key={book.id} 
+              className={`book-card ${index === centerIndex ? "center" : ""}`}
+              onClick={() => handleBookClick(book.id)}
+            >
               <img src={book.image} alt={book.title} className="book-cover" />
               <div className="book-info">
                 <h3 className="book-title">{book.title}</h3>

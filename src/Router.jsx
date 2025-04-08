@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Login/pages/Login.jsx";
 import Home from "./Home/pages/Home.jsx";
 import Menu from "./Menu/pages/Menu.jsx";
+import Book from "./Book/pages/Book";
 
 export default function Router() {
   return (
@@ -10,6 +11,7 @@ export default function Router() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/menu" element={<Menu />}></Route>
+        <Route path="/book/:id" element={<Book />} />
       </Routes>
     </>
   );
