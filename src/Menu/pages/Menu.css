@@ -48,45 +48,77 @@
   padding: 20px 0;
 }
 
-.menu-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-}
-
-.menu-nav li {
-  padding: 16px 0;
-  border-bottom: 1px solid #f5f5f5;
-}
-
-.menu-nav a {
+.user-info h3 {
+  font-size: 1.4rem;
+  font-weight: 1000;
   color: #333;
-  text-decoration: none;
-  font-size: 1.1rem;
-  display: block;
+  margin-top: 50px;
+  margin-bottom: 5px;
+  letter-spacing: -0.5px;
 }
 
-.menu-nav a:hover {
-  color: #00a896;
+.book-image {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #5c5c5c;
 }
 
-.menu-item {
+.book-list {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1px;
+}
+
+.user-stats {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0; /* 선이랑 내용 간격 */
+  border-top: 1px solid #eee; /* 위 선 */
+  border-bottom: 1px solid #eee; /* 아래 선 */
+}
+
+.info-button {
   width: 100%;
-  padding: 20px 0;
-  text-align: center;
-  text-decoration: none;
+  padding: 20px 40px;
+  margin-top: auto;
+  background: none;
+  border: none;
   color: #333;
-  font-size: 1.2rem;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  font-weight: 100;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.menu-item:hover {
-  background-color: #f8f8f8;
-  color: #00a896;
+.user-info h4 {
+  color: black;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 1rem;
+  font-weight: 100;
+  flex-direction: column;
 }
 
-.menu-item:last-child {
-  border-bottom: none;
+.book-button {
+  width: 120px; /* 버튼 가로 */
+  height: 180px; /* 버튼 세로 */
+  padding: 20px 60px;
+  padding: 0; /* padding 없애야 이미지 꽉 참 */
+  border: none;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logOut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 100px 0;
 }

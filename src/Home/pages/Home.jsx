@@ -97,11 +97,7 @@ const Home = () => {
         <h2 className="section-title">지금 많이 읽고 있어요</h2>
         <div className="book-list" ref={scrollRef} onScroll={handleScroll}>
           {books.map((book, index) => (
-            <div 
-              key={book.id} 
-              className={`book-card ${index === centerIndex ? "center" : ""}`}
-              onClick={() => handleBookClick(book.id)}
-            >
+            <div key={book.id} className={`book-card ${index === centerIndex ? "center" : ""}`} onClick={() => handleBookClick(book.id)}>
               <img src={book.image} alt={book.title} className="book-cover" />
               <div className="book-info">
                 <h3 className="book-title">{book.title}</h3>
