@@ -1,0 +1,26 @@
+.menu-container {
+  width: 100%;
+  height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+  background-color: #ffffff;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 40px;
+}
+
+.book-item img {
+  width: 125px;
+  height: 170px;
+  border-radius: 10px;
+}
+
+.book-item img:hover {
+  transform: scale(1.05);
+}

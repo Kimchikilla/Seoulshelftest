@@ -55,21 +55,38 @@
   margin-top: 50px;
   margin-bottom: 5px;
   letter-spacing: -0.5px;
+  padding-left: 15px;
 }
 
 .book-image {
   width: 100px;
   height: 150px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #5c5c5c;
 }
 
-.book-list {
+.book-image img {
+  width: 105px;
+  height: 150px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.book-image img:hover {
+  transform: scale(1.05);
+}
+
+.wbook-list {
+  margin-top: 20px;
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 1px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 20px calc(50% - 19vw); /* 중앙 정렬을 위한 패딩 */
+  gap: 20px;
+  position: relative;
+  scroll-behavior: smooth;
 }
 
 .user-stats {

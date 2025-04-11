@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Menu.css";
 import MenuHeader from "../components/MenuHeader";
+import bookImage from "../../assets/Book/XL.jpg";
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -11,12 +12,12 @@ const Menu = () => {
     navigate("/");
   };
 
-  const readed = () => {
-    navigate("/readed");
+  const read = () => {
+    navigate("/read");
   };
 
-  const commant = () => {
-    navigate("/commant");
+  const comment = () => {
+    navigate("/allcomment");
   };
 
   const scrap = () => {
@@ -34,12 +35,12 @@ const Menu = () => {
         <h3>닉네임 필드</h3>
         <div className="user-stats">
           <div>
-            <button onClick={readed} className="info-button">
+            <button onClick={read} className="info-button">
               읽은 책
             </button>
           </div>
           <div>
-            <button onClick={commant} className="info-button">
+            <button onClick={comment} className="info-button">
               코멘트
             </button>
           </div>
@@ -50,16 +51,11 @@ const Menu = () => {
           </div>
         </div>
         <h4>읽고싶어요</h4>
-        <div className="book-list">
+        <div className="wbook-list">
           {[1, 2, 3].map((item) => (
-            <button onClick={bookinfo} className="book-button">
-              <img
-                key={item}
-                src="src\assets\Book\XL.jpg" // 책 이미지 경로
-                alt="book"
-                className="book-image"
-              />
-            </button>
+            <div className="book-image" onClick={bookinfo}>
+              <img key={item} src={bookImage} alt="book" />
+            </div>
           ))}
         </div>
         <div className="logOut">
