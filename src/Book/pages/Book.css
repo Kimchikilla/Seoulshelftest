@@ -190,7 +190,7 @@ body {
 
 .comment-content {
   color: #444;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1.5;
   margin-bottom: 12px;
 }
@@ -204,17 +204,17 @@ body {
 .comment-action {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   background: none;
   border: none;
   color: #666;
-  font-size: 0.85rem;
-  padding: 4px;
+  font-size: 0.8rem;
+  padding: 1px;
   cursor: pointer;
 }
 
 .comment-action .material-icons {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .comment-action:hover {
