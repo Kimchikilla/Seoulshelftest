@@ -3,6 +3,7 @@ import Login from "./Login/pages/Login.jsx";
 import Home from "./Home/pages/Home.jsx";
 import Menu from "./Menu/pages/Menu.jsx";
 import Book from "./Book/pages/Book";
+import Comment from "./Comment/pages/Comment";
 
 export default function Router() {
   return (
@@ -12,6 +13,7 @@ export default function Router() {
         <Route path="/home" element={<Home />}></Route>
         <Route path="/menu" element={<Menu />}></Route>
         <Route path="/book/:id" element={<Book />} />
+        <Route path="/book/:id/comment" element={<Comment />} />
       </Routes>
     </>
   );

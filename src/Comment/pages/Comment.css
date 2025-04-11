@@ -1,0 +1,101 @@
+.comment-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.comment-header {
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #eee;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.comment-header-button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: #00A896;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.header-button:hover {
+  opacity: 0.8;
+}
+
+.comment-header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.comment-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.comment-textarea {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  border: none;
+  resize: none;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.comment-textarea::placeholder {
+  color: #999;
+}
+
+.comment-textarea:focus {
+  outline: none;
+}
+
+/* 모바일 최적화 */
+@media screen and (max-width: 480px) {
+  .comment-header-title {
+    font-size: 1rem;
+  }
+
+  .comment-header-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .comment-content {
+    padding: 16px;
+  }
+
+  .comment-textarea {
+    font-size: 0.95rem;
+  }
+}

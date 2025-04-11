@@ -1,11 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./Book.css";
 import Header from "../../Home/components/Header";
 import bookImage from "../../assets/Book/XL.jpg";
 
 const Book = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   
   const bookData = {
     title: "일하는 사람을 위한 철학",
@@ -13,6 +14,10 @@ const Book = () => {
     image: bookImage,
     averageRating: 4.5,
     totalRatings: 128
+  };
+
+  const handleCommentClick = () => {
+    navigate(`/book/${id}/comment`);
   };
 
   return (
@@ -62,7 +67,7 @@ const Book = () => {
                 <span className="material-icons">check</span>
                 <span className="action-text">읽었어요</span>
               </button>
-              <button className="action-button">
+              <button className="action-button" onClick={handleCommentClick}>
                 <span className="material-icons">edit</span>
                 <span className="action-text">코멘트</span>
               </button>
