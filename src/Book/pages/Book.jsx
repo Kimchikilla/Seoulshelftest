@@ -39,6 +39,10 @@ const Book = () => {
     navigate(`/book/${id}/comment`);
   };
 
+  const handleReplyClick = (commentId) => {
+    navigate(`/book/${id}/comment/${commentId}/reply`);
+  };
+
   const renderStars = (rating) => {
     return [1, 2, 3, 4, 5].map((star) => (
       <span 
@@ -122,7 +126,10 @@ const Book = () => {
                     <span className="material-icons">favorite</span>
                     <span>{comment.likes}</span>
                   </button>
-                  <button className="comment-action">
+                  <button 
+                    className="comment-action"
+                    onClick={() => handleReplyClick(comment.id)}
+                  >
                     <span className="material-icons">chat_bubble_outline</span>
                     <span>{comment.replies}</span>
                   </button>

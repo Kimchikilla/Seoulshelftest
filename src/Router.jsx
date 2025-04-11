@@ -4,6 +4,7 @@ import Home from "./Home/pages/Home.jsx";
 import Menu from "./Menu/pages/Menu.jsx";
 import Book from "./Book/pages/Book";
 import Comment from "./Comment/pages/Comment";
+import Reply from "./Comment/pages/Reply";
 
 export default function Router() {
   return (
@@ -14,6 +15,7 @@ export default function Router() {
         <Route path="/menu" element={<Menu />}></Route>
         <Route path="/book/:id" element={<Book />} />
         <Route path="/book/:id/comment" element={<Comment />} />
+        <Route path="/book/:id/comment/:commentId/reply" element={<Reply />} />
       </Routes>
     </>
   );
