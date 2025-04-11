@@ -16,8 +16,38 @@ const Book = () => {
     totalRatings: 128
   };
 
+  const comments = [
+    {
+      id: 1,
+      author: "이재명",
+      rating: 4,
+      content: "형수님이 추천해주셔서 읽어봤습니다. 정말 좋네요.",
+      likes: 24,
+      replies: 3
+    },
+    {
+      id: 2,
+      author: "홍준표",
+      rating: 5,
+      content: "대구에서 유유자적하면서 읽었습니다. 정말 좋네요.",
+      likes: 15,
+      replies: 1
+    }
+  ];
+
   const handleCommentClick = () => {
     navigate(`/book/${id}/comment`);
+  };
+
+  const renderStars = (rating) => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <span 
+        key={star} 
+        className={`material-icons star ${star <= rating ? 'full' : 'empty'}`}
+      >
+        star
+      </span>
+    ));
   };
 
   return (
@@ -72,6 +102,33 @@ const Book = () => {
                 <span className="action-text">코멘트</span>
               </button>
             </div>
+          </div>
+        </div>
+
+        <div className="comments-section">
+          <h2 className="comments-title">코멘트</h2>
+          <div className="comments-list">
+            {comments.map((comment) => (
+              <div key={comment.id} className="comment-card">
+                <div className="comment-header">
+                  <span className="comment-author">{comment.author}</span>
+                  <div className="comment-rating">
+                    {renderStars(comment.rating)}
+                  </div>
+                </div>
+                <p className="comment-content">{comment.content}</p>
+                <div className="comment-footer">
+                  <button className="comment-action">
+                    <span className="material-icons">favorite</span>
+                    <span>{comment.likes}</span>
+                  </button>
+                  <button className="comment-action">
+                    <span className="material-icons">chat_bubble_outline</span>
+                    <span>{comment.replies}</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
