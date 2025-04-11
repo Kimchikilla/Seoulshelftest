@@ -97,10 +97,7 @@ const Reply = () => {
           {replies.map((reply) => (
             <div key={reply.id} className="reply-item">
               <div className="reply-item-header">
-                <div className="reply-author-section">
-                  <span className="reply-label">답글</span>
-                  <span className="reply-author">{reply.author}</span>
-                </div>
+                <span className="reply-author">{reply.author}</span>
                 <span className="reply-date">{reply.createdAt}</span>
               </div>
               <p className="reply-item-content">{reply.content}</p>
