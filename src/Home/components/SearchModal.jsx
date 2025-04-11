@@ -44,10 +44,30 @@ const SearchModal = ({ isOpen, onClose }) => {
     setShowResults(true);
   };
 
+  const handlePopularSearchClick = (term) => {
+    setSearchTerm(term);
+    setShowResults(true);
+  };
+
+  const handleClearInput = () => {
+    setSearchTerm("");
+  };
+
   // 책 클릭 시 상세 페이지로 이동
   const handleBookClick = (bookId) => {
     onClose(); // 검색 모달 닫기
     navigate(`/book/${bookId}`);
+  };
+
+  const handleBackButton = () => {
+    if (showResults) {
+      // 검색 결과 화면에서는 초기 모달창으로 돌아가기
+      setShowResults(false);
+      setSearchTerm("");
+    } else {
+      // 초기 모달창에서는 모달 닫기
+      onClose();
+    }
   };
 
   return (
@@ -61,13 +81,18 @@ const SearchModal = ({ isOpen, onClose }) => {
               value={searchTerm} 
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            {searchTerm && (
+              <button type="button" className="clear-button" onClick={handleClearInput}>
+                <span className="material-icons">close</span>
+              </button>
+            )}
           </form>
         </div>
         <div className="header-buttons">
           <button className="search-button" onClick={handleSearch}>
             <span className="material-icons">search</span>
           </button>
-          <button onClick={onClose} className="close-button">
+          <button onClick={handleBackButton} className="close-button">
             <span className="material-icons">arrow_back</span>
           </button>
         </div>
@@ -122,7 +147,7 @@ const SearchModal = ({ isOpen, onClose }) => {
               <h3>인기 검색어</h3>
               <ul>
                 {popularSearches.map((term, index) => (
-                  <li key={index}>
+                  <li key={index} onClick={() => handlePopularSearchClick(term)}>
                     <span className="rank">{index + 1}</span>
                     {term}
                   </li>
