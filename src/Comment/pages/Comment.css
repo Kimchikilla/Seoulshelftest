@@ -1,0 +1,212 @@
+.comment-container {
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+  
+  .comment-header {
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #eee;
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .comment-header-button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: #00A896;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-button:hover {
+    opacity: 0.8;
+  }
+  
+  .comment-header-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .comment-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .comment-textarea {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    border: none;
+    resize: none;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .comment-textarea::placeholder {
+    color: #999;
+  }
+  
+  .comment-textarea:focus {
+    outline: none;
+  }
+  
+  /* 모바일 최적화 */
+  @media screen and (max-width: 480px) {
+    .comment-header-title {
+      font-size: 1rem;
+    }
+  
+    .comment-header-button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+  
+    .comment-content {
+      padding: 16px;
+    }
+  
+    .comment-textarea {
+      font-size: 0.95rem;
+    }
+  }
+  
+  .rating-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .rating-popup-content {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 350px;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    font-size: 2em;
+  }
+  
+  .star {
+    cursor: pointer;
+    color: #ddd;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  
+  .star:hover,
+  .star.active {
+    color: #00A896;
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 2px rgba(0, 168, 150, 0.4));
+  }
+  
+  /* 별점 선택 시 이전 별들도 함께 반짝이는 효과 */
+  .star.active ~ .star {
+    animation: starPulse 0.5s ease-in-out;
+  }
+  
+  @keyframes starPulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .rating-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .rating-buttons button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #00A896;
+    color: white;
+  }
+  
+  .rating-buttons button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .rating-buttons button:first-child {
+    background-color: #6c757d;
+  }
