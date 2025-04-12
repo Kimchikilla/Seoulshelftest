@@ -55,4 +55,3 @@ const AllComment = () => {
 };
 
 export default AllComment;
- 
