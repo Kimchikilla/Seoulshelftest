@@ -9,7 +9,7 @@ import Mypage from "./Mypage/pages/Mypage.jsx";
 
 export default function Router() {
   return (
-    <>
+    <> 
       <Routes>
         <Route path="/" element={<Login />}></Route>
         <Route path="/home" element={<Home />}></Route>
