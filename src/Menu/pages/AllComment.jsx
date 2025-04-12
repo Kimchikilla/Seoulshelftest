@@ -11,7 +11,7 @@ const dummyPosts = [
   { id: 5, date: "03.29", title: "데미안을 읽어 봤는데요" },
   { id: 6, date: "03.29", title: "데미안을 읽어 봤는데요" },
   { id: 7, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 8, date: "03.29", title: "데미안을 읽어 봤는데요" },
+  { id: 8, date: "03.29", title: "데미안을 읽어 봤노" },
 ];
 
 const AllComment = () => {
