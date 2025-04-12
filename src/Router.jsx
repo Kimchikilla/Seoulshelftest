@@ -12,7 +12,7 @@ import Scrap from "./Menu/pages/Scrap.jsx";
 
 export default function Router() {
   return (
-    <>
+    <> 
       <Routes>
         <Route path="/" element={<Login />}></Route>
         <Route path="/home" element={<Home />}></Route>
