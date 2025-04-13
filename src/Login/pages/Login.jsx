@@ -1,34 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import GoogleIcon from "../../assets/google-icon.svg";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: 로그인 로직 구현
-    console.log("로그인 시도:", formData);
-  };
-
   const handleGoogleLogin = () => {
-    // TODO: 실제 구글 로그인 로직 구현
-    console.log("구글 로그인 시도");
-    // 로그인 성공 후 메인 페이지로 이동
-    navigate("/home");
+    // Google OAuth 인증 서버로 리다이렉트
+    window.location.href = "http://15.164.214.242:5001/auth/google";
   };
 
   return (
