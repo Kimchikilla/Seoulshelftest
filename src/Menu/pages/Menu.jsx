@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Menu.css";
 import MenuHeader from "../components/MenuHeader";
 import bookImage from "../../assets/Book/XL.jpg";
+import { removeToken } from "../../utils/tokenManager";
 
 const Menu = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // 로그아웃 처리 로직
+    // 로그아웃 처리: 토큰 제거 및 로그인 페이지로 이동
+    removeToken();
     navigate("/");
   };
 
@@ -53,8 +55,8 @@ const Menu = () => {
         <h4>읽고싶어요</h4>
         <div className="wbook-list">
           {[1, 2, 3].map((item) => (
-            <div className="book-image" onClick={bookinfo}>
-              <img key={item} src={bookImage} alt="book" />
+            <div key={item} className="book-image" onClick={bookinfo}>
+              <img src={bookImage} alt="book" />
             </div>
           ))}
         </div>
