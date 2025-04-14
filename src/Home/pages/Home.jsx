@@ -22,26 +22,16 @@ const Home = () => {
   useEffect(() => {
     const fetchPopularBooks = async () => {
       try {
-<<<<<<< HEAD
-        const response = await fetch('https://seoulshelf.duckdns.org/popular-books');
-        const data = await response.json();
-        setBooks(data);
-      } catch (error) {
-        console.error('Error fetching popular books:', error);
-=======
         const response = await fetch("https://seoulshelf.duckdns.org/popular-books");
         const data = await response.json();
         setBooks(data);
       } catch (error) {
         console.error("Error fetching popular books:", error);
->>>>>>> 9f3a01d8baa942737911e92d8353ffa42ac1640f
       }
     };
 
     fetchPopularBooks();
   }, []);
-<<<<<<< HEAD
-=======
 
   useEffect(() => {
     if (scrollRef.current && books.length > 0) {
@@ -52,53 +42,10 @@ const Home = () => {
       container.scrollLeft = itemWidth * 3 + centerOffset;
     }
   }, [books]);
->>>>>>> 9f3a01d8baa942737911e92d8353ffa42ac1640f
 
   const handleScroll = () => {
     if (!scrollRef.current || books.length === 0) return;
 
-<<<<<<< HEAD
-      let newCenterIndex = Math.round(scrollPosition / (itemWidth + gap));
-
-      const maxIndex = books.length - 1;
-      if (scrollPosition >= maxScroll - itemWidth * 0.3) {
-        newCenterIndex = maxIndex;
-        container.scrollTo({
-          left: maxScroll,
-          behavior: "smooth",
-        });
-      }
-
-      if (scrollPosition <= itemWidth * 0.3) {
-        newCenterIndex = 0;
-        container.scrollTo({
-          left: 0,
-          behavior: "smooth",
-        });
-      }
-
-      if (newCenterIndex !== centerIndex && newCenterIndex >= 0 && newCenterIndex <= maxIndex) {
-        setCenterIndex(newCenterIndex);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      const container = scrollRef.current;
-      const containerWidth = container.offsetWidth;
-      const itemWidth = containerWidth * 0.38;
-      const centerOffset = (containerWidth - itemWidth) / 2;
-      const scrollPosition = itemWidth * centerIndex + centerOffset;
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-    }
-  }, [centerIndex]);
-
-=======
     const container = scrollRef.current;
     const containerWidth = container.offsetWidth;
     const itemWidth = containerWidth * 0.38 + 20;
@@ -119,7 +66,6 @@ const Home = () => {
     }
   };
 
->>>>>>> 9f3a01d8baa942737911e92d8353ffa42ac1640f
   const handleBookClick = (bookId) => {
     navigate(`/book/${bookId}`);
   };
@@ -137,22 +83,12 @@ const Home = () => {
 
           {/* 실제 목록 */}
           {books.map((book, index) => (
-<<<<<<< HEAD
-            <div key={index} className={`book-card ${index === centerIndex ? "center" : ""}`} onClick={() => handleBookClick(book.id)}>
-              <img src={book.image_url} alt={book.title} className="book-cover" />
-              <div className="book-info">
-                <h3 className="book-title">{book.title}</h3>
-                <p className="book-author">{book.author}</p>
-              </div>
-            </div>
-=======
             <BookCard key={index} book={book} isCenter={index === centerIndex} onClick={() => handleBookClick(book.id)} />
           ))}
 
           {/* 뒤쪽 복제 */}
           {books.slice(0, 3).map((book, index) => (
             <BookCard key={`tail-${index}`} book={book} />
->>>>>>> 9f3a01d8baa942737911e92d8353ffa42ac1640f
           ))}
         </div>
       </div>
