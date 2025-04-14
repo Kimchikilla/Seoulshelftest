@@ -10,6 +10,21 @@ const Book = () => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchCommentLikes = async (commentId) => {
+    try {
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/likes`);
+      if (!response.ok) {
+        throw new Error('좋아요 수 조회에 실패했습니다.');
+      }
+      const data = await response.json();
+      console.log('Likes data for comment', commentId, ':', data);
+      return Number(data.likeCount) || 0;
+    } catch (error) {
+      console.error('Error fetching likes for comment', commentId, ':', error);
+      return 0;
+    }
+  };
+
   useEffect(() => {
     const fetchBookData = async () => {
       try {
@@ -33,21 +48,26 @@ const Book = () => {
           throw new Error('댓글을 불러오는데 실패했습니다.');
         }
         const data = await response.json();
-        console.log('Comments data:', data); // 디버깅용 로그
-        // API 응답 형식에 맞게 데이터 처리
-        const formattedComments = data.map(comment => ({
-          id: comment.id,
-          author: comment.user_name || '익명',
-          rating: Number(comment.rating) || 0,
-          content: comment.content,
-          created_at: comment.created_at,
-          likes: 0, // 기본값
-          replies: 0 // 기본값
+        console.log('Comments data:', data);
+        
+        // 각 코멘트의 좋아요 수를 가져옴
+        const commentsWithLikes = await Promise.all(data.map(async comment => {
+          const likes = await fetchCommentLikes(comment.id);
+          return {
+            id: comment.id,
+            author: comment.user_name || '익명',
+            rating: Number(comment.rating) || 0,
+            content: comment.content,
+            created_at: comment.created_at,
+            likes: likes,
+            replies: 0 // 기본값
+          };
         }));
-        setComments(formattedComments);
+        
+        setComments(commentsWithLikes);
       } catch (error) {
         console.error('Error fetching comments:', error);
-        setComments([]); // 에러 시 빈 배열로 초기화
+        setComments([]);
       }
     };
 
