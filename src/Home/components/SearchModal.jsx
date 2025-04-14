@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SearchModal.css";
-import bookImage from "../../assets/Book/XL.jpg";
 
 const SearchModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과를 저장할 state 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태를 관리할 state 추가
 
   // localStorage에서 최근 검색어 불러오기
   useEffect(() => {
@@ -19,15 +20,29 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   const popularSearches = ["베스트셀러", "자기계발", "소설", "에세이", "인문학"];
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
       setShowResults(true);
-      // 최근 검색어에 추가하고 localStorage에 저장
+      setIsLoading(true);
+
+      // 최근 검색어에 추가
       if (!recentSearches.includes(searchTerm)) {
         const newRecentSearches = [searchTerm, ...recentSearches.slice(0, 4)];
         setRecentSearches(newRecentSearches);
         localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
+      }
+
+      try {
+        const response = await fetch(`https://seoulshelf.duckdns.org/books/search?q=${encodeURIComponent(searchTerm)}`);
+        if (!response.ok) throw new Error('검색에 실패했습니다');
+        const data = await response.json();
+        setSearchResults(data);
+      } catch (error) {
+        console.error('검색 에러:', error);
+        setSearchResults([]);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -39,14 +54,40 @@ const SearchModal = ({ isOpen, onClose }) => {
     localStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
   };
 
-  const handleRecentSearchClick = (term) => {
+  const handleRecentSearchClick = async (term) => {
     setSearchTerm(term);
     setShowResults(true);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`https://seoulshelf.duckdns.org/books/search?q=${encodeURIComponent(term)}`);
+      if (!response.ok) throw new Error('검색에 실패했습니다');
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error('검색 에러:', error);
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handlePopularSearchClick = (term) => {
+  const handlePopularSearchClick = async (term) => {
     setSearchTerm(term);
     setShowResults(true);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`https://seoulshelf.duckdns.org/books/search?q=${encodeURIComponent(term)}`);
+      if (!response.ok) throw new Error('검색에 실패했습니다');
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error('검색 에러:', error);
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClearInput = () => {
@@ -71,9 +112,9 @@ const SearchModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className={`search-modal ${isOpen ? "open" : ""}`}>
-      <div className="search-header">
-        <div className="search-input-wrapper">
+    <div className={`search-modal-container ${isOpen ? "modal-open" : ""}`}>
+      <div className="search-modal-header">
+        <div className="search-modal-input-wrapper">
           <form onSubmit={handleSearch}>
             <input 
               type="text" 
@@ -82,47 +123,54 @@ const SearchModal = ({ isOpen, onClose }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             {searchTerm && (
-              <button type="button" className="clear-button" onClick={handleClearInput}>
+              <button type="button" className="search-modal-clear-button" onClick={handleClearInput}>
                 <span className="material-icons">close</span>
               </button>
             )}
           </form>
         </div>
-        <div className="header-buttons">
-          <button className="search-button" onClick={handleSearch}>
+        <div className="search-modal-header-buttons">
+          <button className="search-modal-search-button" onClick={handleSearch}>
             <span className="material-icons">search</span>
           </button>
-          <button onClick={handleBackButton} className="close-button">
+          <button onClick={handleBackButton} className="search-modal-close-button">
             <span className="material-icons">arrow_back</span>
           </button>
         </div>
       </div>
 
-      <div className="search-content">
+      <div className="search-modal-content">
         {showResults ? (
-          <div className="search-results">
+          <div className="search-modal-results">
             <h3>검색 결과</h3>
-            <div className="results-grid">
-              {Array(5)
-                .fill(null)
-                .map((_, index) => (
+            {isLoading ? (
+              <div className="search-modal-loading">검색 중...</div>
+            ) : (
+              <div className="search-modal-results-grid">
+                {searchResults.map((book) => (
                   <div 
-                    key={index} 
-                    className="book-result"
-                    onClick={() => handleBookClick(index + 1)}
+                    key={book.id} 
+                    className="search-modal-book-result"
+                    onClick={() => handleBookClick(book.id)}
                   >
-                    <img src={bookImage} alt="책 표지" />
-                    <div className="book-info">
-                      <h4>일하는 사람을 위한 철학</h4>
-                      <p>에릭 몽 시게티</p>
+                    <div className="search-modal-book-image">
+                      <img src={book.image_url} alt={book.title} />
+                    </div>
+                    <div className="search-modal-book-info">
+                      <h4>{book.title}</h4>
+                      <p className="search-modal-book-author">{book.author}</p>
                     </div>
                   </div>
                 ))}
-            </div>
+                {searchResults.length === 0 && !isLoading && (
+                  <p className="search-modal-no-results">검색 결과가 없습니다</p>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           <>
-            <section className="recent-searches">
+            <section className="search-modal-recent-searches">
               <h3>최근 검색어</h3>
               <ul>
                 {recentSearches.map((term, index) => (
@@ -130,7 +178,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                     <span className="material-icons">history</span>
                     {term}
                     <button 
-                      className="delete-button" 
+                      className="search-modal-delete-button" 
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteRecent(index);
@@ -143,12 +191,12 @@ const SearchModal = ({ isOpen, onClose }) => {
               </ul>
             </section>
 
-            <section className="popular-searches">
+            <section className="search-modal-popular-searches">
               <h3>인기 검색어</h3>
               <ul>
                 {popularSearches.map((term, index) => (
                   <li key={index} onClick={() => handlePopularSearchClick(term)}>
-                    <span className="rank">{index + 1}</span>
+                    <span className="search-modal-rank">{index + 1}</span>
                     {term}
                   </li>
                 ))}

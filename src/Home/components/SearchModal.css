@@ -1,4 +1,4 @@
-.search-modal {
+.search-modal-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,18 +10,18 @@
   z-index: 1000;
 }
 
-.search-modal.open {
+.search-modal-container.modal-open {
   transform: translateY(0);
 }
 
-.search-header {
+.search-modal-header {
   display: flex;
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid #eee;
 }
 
-.search-input-wrapper {
+.search-modal-input-wrapper {
   flex: 1;
   display: flex;
   align-items: center;
@@ -31,14 +31,14 @@
   margin-right: 16px;
 }
 
-.header-buttons {
+.search-modal-header-buttons {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.search-button,
-.close-button {
+.search-modal-search-button,
+.search-modal-close-button {
   background: none;
   border: none;
   padding: 8px;
@@ -48,13 +48,13 @@
   justify-content: center;
 }
 
-.search-button .material-icons,
-.close-button .material-icons {
+.search-modal-search-button .material-icons,
+.search-modal-close-button .material-icons {
   font-size: 24px;
   color: #333;
 }
 
-.search-input-wrapper input {
+.search-modal-input-wrapper input {
   flex: 1;
   border: none;
   background: none;
@@ -64,14 +64,14 @@
   color: #333;
 }
 
-.search-input-wrapper form {
+.search-modal-input-wrapper form {
   width: 100%;
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.clear-button {
+.search-modal-clear-button {
   position: absolute;
   right: 8px;
   background: none;
@@ -83,37 +83,37 @@
   justify-content: center;
 }
 
-.clear-button .material-icons {
+.search-modal-clear-button .material-icons {
   font-size: 20px;
   color: #999;
 }
 
-.search-content {
+.search-modal-content {
   padding: 20px;
   height: calc(100vh - 70px);
   overflow-y: auto;
 }
 
-.recent-searches,
-.popular-searches {
+.search-modal-recent-searches,
+.search-modal-popular-searches {
   margin-bottom: 32px;
 }
 
-.recent-searches h3,
-.popular-searches h3 {
+.search-modal-recent-searches h3,
+.search-modal-popular-searches h3 {
   font-size: 14px;
   color: #666;
   margin-bottom: 16px;
 }
 
-.recent-searches ul,
-.popular-searches ul {
+.search-modal-recent-searches ul,
+.search-modal-popular-searches ul {
   list-style: none;
   padding: 0;
 }
 
-.recent-searches li,
-.popular-searches li {
+.search-modal-recent-searches li,
+.search-modal-popular-searches li {
   display: flex;
   align-items: center;
   padding: 12px 0;
@@ -121,20 +121,20 @@
   font-size: 16px;
 }
 
-.recent-searches .material-icons {
+.search-modal-recent-searches .material-icons {
   color: #999;
   margin-right: 12px;
   font-size: 20px;
 }
 
-.popular-searches .rank {
+.search-modal-popular-searches .search-modal-rank {
   width: 24px;
   color: #00A896;
   font-weight: bold;
   margin-right: 12px;
 }
 
-.popular-searches li {
+.search-modal-popular-searches li {
   display: flex;
   align-items: center;
   padding: 12px 0;
@@ -144,11 +144,11 @@
   transition: background-color 0.2s;
 }
 
-.popular-searches li:hover {
+.search-modal-popular-searches li:hover {
   background-color: #f5f5f5;
 }
 
-.delete-button {
+.search-modal-delete-button {
   margin-left: auto;
   background: none;
   border: none;
@@ -157,55 +157,83 @@
   color: #999;
 }
 
-.search-results {
+.search-modal-results {
   padding: 20px 0;
 }
 
-.search-results h3 {
+.search-modal-results h3 {
   font-size: 16px;
   color: #333;
   margin-bottom: 20px;
 }
 
-.results-grid {
+.search-modal-results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 0 20px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px;
+  padding: 0 16px;
+  margin-top: 16px;
 }
 
-.book-result {
+.search-modal-book-result {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-}
-
-.book-result img {
-  width: 120px;
-  height: 174px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.book-result .book-info {
+  cursor: pointer;
+  transition: transform 0.2s ease;
   width: 100%;
 }
 
-.book-result h4 {
-  font-size: 14px;
+.search-modal-book-result:hover {
+  transform: translateY(-5px);
+}
+
+.search-modal-book-image {
+  width: 120px;
+  height: 174px;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.search-modal-book-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-modal-book-info {
+  width: 120px;
+  text-align: left;
+  padding: 0 4px;
+}
+
+.search-modal-book-info h4 {
+  font-size: 13px;
   font-weight: 500;
   color: #333;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  height: 2.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: keep-all;
 }
 
-.book-result p {
+.search-modal-book-info .search-modal-book-author {
   font-size: 12px;
   color: #666;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.recent-searches li {
+.search-modal-recent-searches li {
   display: flex;
   align-items: center;
   padding: 12px 0;
@@ -215,6 +243,19 @@
   transition: background-color 0.2s;
 }
 
-.recent-searches li:hover {
+.search-modal-recent-searches li:hover {
   background-color: #f5f5f5;
+}
+
+.search-modal-loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.search-modal-no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 14px;
 }
