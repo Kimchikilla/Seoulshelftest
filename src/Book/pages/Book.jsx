@@ -1,39 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Book.css";
 import Header from "../../Home/components/Header";
-import bookImage from "../../assets/Book/XL.jpg";
 
 const Book = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  const bookData = {
-    title: "일하는 사람을 위한 철학",
-    author: "에릭 몽 시게티",
-    image: bookImage,
-    averageRating: 4.5,
-    totalRatings: 128
-  };
+  const [bookData, setBookData] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const comments = [
-    {
-      id: 1,
-      author: "이재명",
-      rating: 4,
-      content: "형수님이 추천해주셔서 읽어봤습니다. 정말 좋네요.",
-      likes: 24,
-      replies: 3
-    },
-    {
-      id: 2,
-      author: "홍준표",
-      rating: 5,
-      content: "대구에서 유유자적하면서 읽었습니다. 정말 좋네요.",
-      likes: 15,
-      replies: 1
-    }
-  ];
+  useEffect(() => {
+    const fetchBookData = async () => {
+      try {
+        const response = await fetch(`https://seoulshelf.duckdns.org/books/${id}`);
+        if (!response.ok) {
+          throw new Error('책 정보를 불러오는데 실패했습니다.');
+        }
+        const data = await response.json();
+        setBookData(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching book data:', error);
+        setIsLoading(false);
+      }
+    };
+
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`https://seoulshelf.duckdns.org/books/${id}/comments`);
+        if (!response.ok) {
+          throw new Error('댓글을 불러오는데 실패했습니다.');
+        }
+        const data = await response.json();
+        console.log('Comments data:', data); // 디버깅용 로그
+        // API 응답 형식에 맞게 데이터 처리
+        const formattedComments = data.map(comment => ({
+          id: comment.id,
+          author: comment.user_name || '익명',
+          rating: Number(comment.rating) || 0,
+          content: comment.content,
+          created_at: comment.created_at,
+          likes: 0, // 기본값
+          replies: 0 // 기본값
+        }));
+        setComments(formattedComments);
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+        setComments([]); // 에러 시 빈 배열로 초기화
+      }
+    };
+
+    fetchBookData();
+    fetchComments();
+  }, [id]);
 
   const handleCommentClick = () => {
     navigate(`/book/${id}/comment`);
@@ -54,6 +74,24 @@ const Book = () => {
     ));
   };
 
+  if (isLoading) {
+    return (
+      <div className="book-detail-container">
+        <Header />
+        <div className="loading">로딩중...</div>
+      </div>
+    );
+  }
+
+  if (!bookData) {
+    return (
+      <div className="book-detail-container">
+        <Header />
+        <div className="error">책을 찾을 수 없습니다.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="book-detail-container">
       <Header />
@@ -64,7 +102,7 @@ const Book = () => {
         </div>
 
         <div className="book-cover-section">
-          <img src={bookData.image} alt={bookData.title} className="book-detail-cover" />
+          <img src={bookData.image_url} alt={bookData.title} className="book-detail-cover" />
         </div>
 
         <div className="book-rating-section">
@@ -74,14 +112,14 @@ const Book = () => {
                 <span 
                   key={star} 
                   className={`material-icons star ${
-                    star <= bookData.averageRating
+                    star <= bookData.average_rating
                       ? 'full'
-                      : star - bookData.averageRating <= 0.5
+                      : star - bookData.average_rating <= 0.5
                       ? 'half'
                       : 'empty'
                   }`}
                 >
-                  {star - bookData.averageRating <= 0.5 && star > bookData.averageRating
+                  {star - bookData.average_rating <= 0.5 && star > bookData.average_rating
                     ? 'star_half'
                     : 'star'
                   }
@@ -90,7 +128,7 @@ const Book = () => {
             </div>
             <div className="rating-text-container">
               <span className="rating-label">평균평점</span>
-              <span className="rating-value">{bookData.averageRating}</span>
+              <span className="rating-value">{bookData.average_rating}</span>
             </div>
             <div className="action-icons">
               <button className="action-button">
