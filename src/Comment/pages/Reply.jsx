@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './Reply.css';
 
@@ -6,41 +6,59 @@ const Reply = () => {
   const navigate = useNavigate();
   const { id, commentId } = useParams();
   const [reply, setReply] = useState('');
+  const [comment, setComment] = useState(null);
+  const [replies, setReplies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 예시 댓글 데이터
-  const comment = {
-    id: commentId,
-    author: "문재인",
-    rating: 4,
-    content: "손흥민이 어디갔어 손흥민이..",
-    likes: 24,
-    replies: 3
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 원본 코멘트 가져오기
+        const commentsResponse = await fetch(`https://seoulshelf.duckdns.org/books/${id}/comments`);
+        if (!commentsResponse.ok) {
+          throw new Error('코멘트를 불러오는데 실패했습니다.');
+        }
+        const commentsData = await commentsResponse.json();
+        const originalComment = commentsData.find(c => c.id === Number(commentId));
+        
+        if (originalComment) {
+          // 코멘트의 좋아요 수 가져오기
+          const likesResponse = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/likes`);
+          const likesData = await likesResponse.json();
+          
+          setComment({
+            id: originalComment.id,
+            author: originalComment.user_name,
+            content: originalComment.content,
+            rating: Number(originalComment.rating),
+            created_at: originalComment.created_at,
+            likes: Number(likesData.likeCount) || 0
+          });
+        }
 
-  // 예시 답글 데이터
-  const replies = [
-    {
-      id: 1,
-      author: "일론머스크",
-      content: "ㅌㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ ",
-      likes: 5,
-      createdAt: "2025-04-11"
-    },
-    {
-      id: 2,
-      author: "김정은",
-      content: "저는 트럼프가 더 좋던데요.",
-      likes: 3,
-      createdAt: "2025-04-10"
-    },
-    {
-        id: 3,
-        author: "이재명",
-        content: "이명박도 전과11범으로 대통령해먹었잖아~ 한잔해",
-        likes: 24,
-        createdAt: "2025-04-09"
-    }
-  ];
+        // 답글 목록 가져오기
+        const repliesResponse = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/replies`);
+        if (!repliesResponse.ok) {
+          throw new Error('답글을 불러오는데 실패했습니다.');
+        }
+        const repliesData = await repliesResponse.json();
+        setReplies(repliesData.map(reply => ({
+          id: reply.id,
+          author: reply.name,
+          content: reply.content,
+          createdAt: new Date(reply.created_at).toLocaleDateString(),
+          likes: 0
+        })));
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setReplies([]);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id, commentId]);
 
   const handleSubmit = () => {
     if (!reply.trim()) return;
@@ -75,40 +93,44 @@ const Reply = () => {
       <div className="reply-content">
         <div className="original-comment">
           <div className="comment-header">
-            <span className="comment-author">{comment.author}</span>
+            <span className="comment-author">{comment?.author}</span>
             <div className="comment-rating">
-              {renderStars(comment.rating)}
+              {renderStars(comment?.rating || 0)}
             </div>
           </div>
-          <p className="comment-content">{comment.content}</p>
+          <p className="comment-content">{comment?.content}</p>
           <div className="comment-footer">
             <button className="comment-action">
               <span className="material-icons">favorite</span>
-              <span>{comment.likes}</span>
+              <span>{comment?.likes || 0}</span>
             </button>
             <button className="comment-action">
               <span className="material-icons">chat_bubble_outline</span>
-              <span>{comment.replies}</span>
+              <span>{replies.length}</span>
             </button>
           </div>
         </div>
 
         <div className="replies-section">
-          {replies.map((reply) => (
-            <div key={reply.id} className="reply-item">
-              <div className="reply-item-header">
-                <span className="reply-author">{reply.author}</span>
-                <span className="reply-date">{reply.createdAt}</span>
+          {isLoading ? (
+            <div className="loading">답글을 불러오는 중...</div>
+          ) : (
+            replies.map((reply) => (
+              <div key={reply.id} className="reply-item">
+                <div className="reply-item-header">
+                  <span className="reply-author">{reply.author}</span>
+                  <span className="reply-date">{reply.createdAt}</span>
+                </div>
+                <p className="reply-item-content">{reply.content}</p>
+                <div className="reply-item-footer">
+                  <button className="reply-action">
+                    <span className="material-icons">favorite</span>
+                    <span>{reply.likes}</span>
+                  </button>
+                </div>
               </div>
-              <p className="reply-item-content">{reply.content}</p>
-              <div className="reply-item-footer">
-                <button className="reply-action">
-                  <span className="material-icons">favorite</span>
-                  <span>{reply.likes}</span>
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="reply-input-section">
