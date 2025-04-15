@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Header from "../components/Header";
+import RecBook from "../components/Recommend";
 
 const BookCard = ({ book, isCenter, onClick }) => (
   <div className={`book-card ${isCenter ? "center" : ""}`} onClick={onClick}>
@@ -92,6 +93,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <RecBook />
     </div>
   );
 };

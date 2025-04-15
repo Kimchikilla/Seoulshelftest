@@ -35,13 +35,14 @@
 
 .book-section {
   width: 100%;
+  margin-bottom: -90px;
 }
 
 .section-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 1000;
   color: #333;
-  margin-top: 70px;
+  margin-top: 80px;
   margin-bottom: 5px;
   padding: 0 25px;
   letter-spacing: -0.5px;
@@ -130,10 +131,6 @@
   .book-cover {
     width: 180px; /* 모바일에서도 큰 크기 유지 */
     height: 261px; /* 비율 유지 */
-  }
-
-  .section-title {
-    font-size: 1.1rem;
   }
 
   .book-title {
