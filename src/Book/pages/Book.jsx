@@ -25,6 +25,21 @@ const Book = () => {
     }
   };
 
+  const fetchCommentReplies = async (commentId) => {
+    try {
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/replies`);
+      if (!response.ok) {
+        throw new Error('답글 수 조회에 실패했습니다.');
+      }
+      const data = await response.json();
+      console.log('Replies data for comment', commentId, ':', data);
+      return data.length;
+    } catch (error) {
+      console.error('Error fetching replies for comment', commentId, ':', error);
+      return 0;
+    }
+  };
+
   useEffect(() => {
     const fetchBookData = async () => {
       try {
@@ -50,9 +65,12 @@ const Book = () => {
         const data = await response.json();
         console.log('Comments data:', data);
         
-        // 각 코멘트의 좋아요 수를 가져옴
-        const commentsWithLikes = await Promise.all(data.map(async comment => {
-          const likes = await fetchCommentLikes(comment.id);
+        // 각 코멘트의 좋아요 수와 답글 수를 가져옴
+        const commentsWithData = await Promise.all(data.map(async comment => {
+          const [likes, replyCount] = await Promise.all([
+            fetchCommentLikes(comment.id),
+            fetchCommentReplies(comment.id)
+          ]);
           return {
             id: comment.id,
             author: comment.user_name || '익명',
@@ -60,11 +78,11 @@ const Book = () => {
             content: comment.content,
             created_at: comment.created_at,
             likes: likes,
-            replies: 0 // 기본값
+            replies: replyCount
           };
         }));
         
-        setComments(commentsWithLikes);
+        setComments(commentsWithData);
       } catch (error) {
         console.error('Error fetching comments:', error);
         setComments([]);
