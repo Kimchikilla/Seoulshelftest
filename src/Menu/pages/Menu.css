@@ -8,6 +8,19 @@
   background-color: #ffffff;
 }
 
+.user-info {
+  width: 100%;
+  margin-bottom: -90px;
+}
+
+.nickname {
+  padding-top: 40px;
+}
+
+.nickname h3 {
+  margin: 30px;
+}
+
 /* 로그아웃 버튼 스타일 */
 .logout-button {
   width: 100%;

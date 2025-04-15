@@ -1,15 +1,31 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Menu.css";
 import MenuHeader from "../components/MenuHeader";
 import bookImage from "../../assets/Book/XL.jpg";
-import { removeToken } from "../../utils/tokenManager";
+import { removeToken, getToken } from "../../utils/tokenManager";
+import { jwtDecode } from "jwt-decode"; // ✅ 수정된 부분
 
 const Menu = () => {
   const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
+
+  useEffect(() => {
+    const token = getToken();
+    console.log("저장된 토큰:", localStorage.getItem("accessToken"));
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token); // ✅ 여기서도 수정
+        console.log("디코딩된 토큰:", decoded);
+        setNickname(decoded.name || decoded.given_name || "사용자");
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+      }
+    }
+  }, []);
 
   const handleLogout = () => {
-    // 로그아웃 처리: 토큰 제거 및 로그인 페이지로 이동
     removeToken();
     navigate("/");
   };
@@ -27,14 +43,16 @@ const Menu = () => {
   };
 
   const bookinfo = () => {
-    navigate("/book/:id");
+    navigate("/book/1");
   };
 
   return (
     <div className="menu-container">
       <MenuHeader />
       <div className="user-info">
-        <h3>닉네임 필드</h3>
+        <div className="nickname">
+          <h3>{nickname ? `${nickname} 님` : "닉네임 로드 실패"}</h3>
+        </div>
         <div className="user-stats">
           <div>
             <button onClick={read} className="info-button">

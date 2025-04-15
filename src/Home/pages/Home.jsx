@@ -15,6 +15,18 @@ const BookCard = ({ book, isCenter, onClick }) => (
 );
 
 const Home = () => {
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      console.log("토큰 저장 완료:", token);
+      // URL 깔끔하게 정리 (옵션)
+      window.history.replaceState({}, document.title, "/home");
+    }
+  }, []);
+
   const navigate = useNavigate();
   const [centerIndex, setCenterIndex] = useState(0);
   const scrollRef = useRef(null);
