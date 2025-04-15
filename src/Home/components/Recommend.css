@@ -1,0 +1,52 @@
+.rec-container {
+}
+
+.rec h4 {
+  font-size: 1.2rem;
+  font-weight: 1000;
+  color: #333;
+  margin-top: 70px;
+  margin-bottom: 5px;
+  padding: 0 25px;
+  letter-spacing: -0.5px;
+}
+
+.recbook-title {
+  text-align: center;
+}
+
+.Recbook-list {
+  margin-top: 20px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 20px 25px; /* 중앙 정렬 → 왼쪽 정렬 */
+  gap: 16px;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.Recbook-list img {
+  border-radius: 10px;
+  width: 105px;
+  height: 150px;
+}
+
+.recbook-title h3 {
+  align-items: center;
+  font-size: 0.8rem;
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 보여줄 줄 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recbook-title p {
+  font-size: 0.5rem;
+  color: #333;
+}
