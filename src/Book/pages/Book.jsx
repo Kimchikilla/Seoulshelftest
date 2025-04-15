@@ -10,6 +10,10 @@ const Book = () => {
   const [bookData, setBookData] = useState(null);
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editContent, setEditContent] = useState('');
+  const [editRating, setEditRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   const fetchCommentLikes = async (commentId) => {
     try {
@@ -137,6 +141,104 @@ const Book = () => {
     }
   };
 
+  const handleEditClick = async (commentId) => {
+    try {
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
+        headers: {
+          'Authorization': `Bearer ${getToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('코멘트 정보를 불러오는데 실패했습니다');
+      }
+
+      const commentData = await response.json();
+      setEditContent(commentData.content);
+      setEditRating(commentData.rating);
+      setEditingCommentId(commentId);
+    } catch (error) {
+      console.error('Error fetching comment:', error);
+      alert('코멘트 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setEditContent('');
+    setEditRating(0);
+  };
+
+  const handleUpdateComment = async (commentId) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          content: editContent.trim(),
+          rating: Number(editRating)
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('코멘트 수정에 실패했습니다');
+      }
+
+      // 코멘트 목록 갱신
+      const updatedComments = comments.map(comment => 
+        comment.id === commentId 
+          ? { ...comment, content: editContent.trim(), rating: Number(editRating) }
+          : comment
+      );
+
+      setComments(updatedComments);
+      setEditingCommentId(null);
+      setEditContent('');
+      setEditRating(0);
+    } catch (error) {
+      console.error('Error updating comment:', error);
+      alert('코멘트 수정에 실패했습니다.');
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('코멘트를 삭제하시겠습니까?')) return;
+
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('코멘트 삭제에 실패했습니다');
+      }
+
+      // 코멘트 목록에서 삭제된 코멘트 제거
+      setComments(comments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      alert('코멘트 삭제에 실패했습니다.');
+    }
+  };
+
   const renderStars = (rating) => {
     return [1, 2, 3, 4, 5].map((star) => (
       <span 
@@ -228,27 +330,81 @@ const Book = () => {
               <div key={comment.id} className="comment-card">
                 <div className="comment-header">
                   <span className="comment-author">{comment.author}</span>
-                  <div className="comment-rating">
-                    {renderStars(comment.rating)}
+                  {editingCommentId === comment.id ? (
+                    <div className="edit-rating">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`material-icons star ${
+                            star <= (hoverRating || editRating) ? 'full' : 'empty'
+                          }`}
+                          onClick={() => setEditRating(star)}
+                          onMouseEnter={() => setHoverRating(star)}
+                          onMouseLeave={() => setHoverRating(0)}
+                        >
+                          star
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="comment-rating">
+                      {renderStars(comment.rating)}
+                    </div>
+                  )}
+                </div>
+                {editingCommentId === comment.id ? (
+                  <div className="edit-section">
+                    <textarea
+                      className="edit-textarea"
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                    />
+                    <div className="edit-buttons">
+                      <button onClick={() => handleUpdateComment(comment.id)}>
+                        저장
+                      </button>
+                      <button onClick={handleCancelEdit}>
+                        취소
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <p className="comment-content">{comment.content}</p>
-                <div className="comment-footer">
-                  <button 
-                    className="comment-action"
-                    onClick={() => handleLikeClick(comment.id)}
-                  >
-                    <span className="material-icons">favorite</span>
-                    <span>{comment.likes}</span>
-                  </button>
-                  <button 
-                    className="comment-action"
-                    onClick={() => handleReplyClick(comment.id)}
-                  >
-                    <span className="material-icons">chat_bubble_outline</span>
-                    <span>{comment.replies}</span>
-                  </button>
-                </div>
+                ) : (
+                  <>
+                    <p className="comment-content">{comment.content}</p>
+                    <div className="comment-footer">
+                      <div className="comment-actions">
+                        <button 
+                          className="comment-action"
+                          onClick={() => handleLikeClick(comment.id)}
+                        >
+                          <span className="material-icons">favorite</span>
+                          <span>{comment.likes}</span>
+                        </button>
+                        <button 
+                          className="comment-action"
+                          onClick={() => handleReplyClick(comment.id)}
+                        >
+                          <span className="material-icons">chat_bubble_outline</span>
+                          <span>{comment.replies}</span>
+                        </button>
+                      </div>
+                      <div className="comment-buttons">
+                        <button 
+                          className="comment-edit-button"
+                          onClick={() => handleEditClick(comment.id)}
+                        >
+                          수정
+                        </button>
+                        <button 
+                          className="comment-delete-button"
+                          onClick={() => handleDeleteComment(comment.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>

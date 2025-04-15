@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './Comment.css';
 import { getToken } from '../../utils/tokenManager';
@@ -10,6 +10,24 @@ const Comment = () => {
   const [showRatingPopup, setShowRatingPopup] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [bookTitle, setBookTitle] = useState('');
+
+  useEffect(() => {
+    const fetchBookData = async () => {
+      try {
+        const response = await fetch(`https://seoulshelf.duckdns.org/books/${id}`);
+        if (!response.ok) {
+          throw new Error('책 정보를 불러오는데 실패했습니다.');
+        }
+        const data = await response.json();
+        setBookTitle(data.title);
+      } catch (error) {
+        console.error('Error fetching book data:', error);
+      }
+    };
+
+    fetchBookData();
+  }, [id]);
 
   const handleSubmit = () => {
     setShowRatingPopup(true);
@@ -56,7 +74,7 @@ const Comment = () => {
         <button className="comment-header-button" onClick={handleSubmit}>
           작성
         </button>
-        <h1 className="comment-header-title">일하는 사람을 위한 철학</h1>
+        <h1 className="comment-header-title">{bookTitle}</h1>
         <button className="comment-header-button" onClick={() => navigate(-1)}>
           <span className="material-icons">arrow_back</span>
         </button>
