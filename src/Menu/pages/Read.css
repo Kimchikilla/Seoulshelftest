@@ -9,18 +9,17 @@
 }
 
 .book-grid {
+  height: 90%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin: 40px;
 }
 
-.book-item img {
-  width: 125px;
-  height: 170px;
+.book-grid img {
   border-radius: 10px;
 }
 
-.book-item img:hover {
+.book-grid img:hover {
   transform: scale(1.05);
 }

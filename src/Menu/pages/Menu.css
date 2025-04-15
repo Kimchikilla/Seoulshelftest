@@ -10,11 +10,11 @@
 
 .user-info {
   width: 100%;
-  margin-bottom: -90px;
+  margin-bottom: -100px;
 }
 
 .nickname {
-  padding-top: 40px;
+  padding-top: 100px;
 }
 
 .nickname h3 {
@@ -71,17 +71,10 @@
   padding-left: 15px;
 }
 
-.book-image {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-}
-
-.book-image img {
+.wbook-list img {
+  border-radius: 10px;
   width: 105px;
   height: 150px;
-  border-radius: 10px;
-  margin-bottom: 10px;
 }
 
 .book-image img:hover {
@@ -96,8 +89,8 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 20px calc(50% - 19vw); /* 중앙 정렬을 위한 패딩 */
-  gap: 20px;
+  padding: 20px 25px; /* 중앙 정렬 → 왼쪽 정렬 */
+  gap: 16px;
   position: relative;
   scroll-behavior: smooth;
 }
@@ -133,22 +126,29 @@
   flex-direction: column;
 }
 
-.book-button {
-  width: 120px; /* 버튼 가로 */
-  height: 180px; /* 버튼 세로 */
-  padding: 20px 60px;
-  padding: 0; /* padding 없애야 이미지 꽉 참 */
-  border: none;
-  background: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .logOut {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 100px 0;
+}
+.wbook-title {
+  margin-top: -50px;
+  text-align: center;
+}
+
+.wbook-title h3 {
+  font-size: 0.8rem;
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 보여줄 줄 수 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wbook-title p {
+  font-size: 0.5rem;
+  color: #333;
 }

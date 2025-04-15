@@ -4,9 +4,38 @@ import "./Read.css";
 import ReadHeader from "../components/ReadHeader";
 import bookImage from "../../assets/Book/XL.jpg"; // 예시 이미지
 
+const RecBookCard = ({ book, onClick }) => (
+  <div onClick={onClick}>
+    <img src={book.image_url} alt={book.title} width="100" />
+    <div className="recbook-title">
+      <h3>{book.title}</h3>
+      <p>{book.author}</p>
+    </div>
+  </div>
+);
+
 const Read = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchPopularBooks = async () => {
+      try {
+        // 읽은책 넣기
+        const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
+        const data = await response.json();
+        setBooks(data);
+      } catch (error) {
+        console.error("Error fetching popular books:", error);
+      }
+    };
+
+    fetchPopularBooks();
+  }, []);
+
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
 
   // 초기 9개 로딩
   useEffect(() => {
@@ -34,18 +63,12 @@ const Read = () => {
     setBooks((prev) => [...prev, ...newBooks]);
   };
 
-  const bookinfo = (id) => {
-    navigate(`/book/${id}`);
-  };
-
   return (
     <div className="menu-container">
       <ReadHeader />
       <div className="book-grid">
         {books.map((book) => (
-          <div key={book.id} className="book-item" onClick={() => bookinfo(book.id)}>
-            <img src={book.image} alt="book" />
-          </div>
+          <RecBookCard key={book.id} book={book} onClick={() => handleBookClick(book.id)} />
         ))}
       </div>
     </div>

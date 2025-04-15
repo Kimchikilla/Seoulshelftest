@@ -35,6 +35,10 @@
   height: 150px;
 }
 
+.Recbook-list img:hover {
+  transform: scale(1.05);
+}
+
 .recbook-title h3 {
   align-items: center;
   font-size: 0.8rem;
