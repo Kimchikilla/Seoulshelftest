@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './Reply.css';
+import { getToken } from '../../utils/tokenManager';
 
 const Reply = () => {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ const Reply = () => {
   const [comment, setComment] = useState(null);
   const [replies, setReplies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingReplyId, setEditingReplyId] = useState(null);
+  const [editContent, setEditContent] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,11 +63,130 @@ const Reply = () => {
     fetchData();
   }, [id, commentId]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!reply.trim()) return;
-    // TODO: 답글 제출 로직 구현
-    console.log('답글 제출:', reply);
-    navigate(`/book/${id}`);
+
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/'); // 토큰이 없으면 로그인 페이지로 이동
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/replies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          content: reply
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('답글 작성에 실패했습니다');
+      }
+
+      // 응답 데이터 받기
+      const newReplyData = await response.json();
+      
+      // 새 답글을 목록에 추가
+      const newReply = {
+        id: newReplyData.id,
+        author: newReplyData.name || '익명',
+        content: newReplyData.content,
+        createdAt: new Date().toLocaleDateString(),
+        likes: 0
+      };
+      
+      setReplies(prevReplies => [...prevReplies, newReply]);
+      
+      // 입력 필드 초기화
+      setReply('');
+
+    } catch (error) {
+      console.error('Error posting reply:', error);
+      alert('답글 작성에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleEditClick = (replyId, content) => {
+    setEditingReplyId(replyId);
+    setEditContent(content);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReplyId(null);
+    setEditContent('');
+  };
+
+  const handleUpdateReply = async (replyId) => {
+    if (!editContent.trim()) return;
+
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/replies/${replyId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          content: editContent
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('답글 수정에 실패했습니다');
+      }
+
+      // 답글 목록 업데이트
+      setReplies(replies.map(reply => 
+        reply.id === replyId 
+          ? { ...reply, content: editContent }
+          : reply
+      ));
+      setEditingReplyId(null);
+      setEditContent('');
+    } catch (error) {
+      console.error('Error updating reply:', error);
+      alert('답글 수정에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const handleDeleteReply = async (replyId) => {
+    if (!window.confirm('답글을 삭제하시겠습니까?')) return;
+
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/replies/${replyId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('답글 삭제에 실패했습니다');
+      }
+
+      // 답글 목록에서 삭제된 답글 제거
+      setReplies(replies.filter(reply => reply.id !== replyId));
+    } catch (error) {
+      console.error('Error deleting reply:', error);
+      alert('답글 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   const renderStars = (rating) => {
@@ -121,13 +243,47 @@ const Reply = () => {
                   <span className="reply-author">{reply.author}</span>
                   <span className="reply-date">{reply.createdAt}</span>
                 </div>
-                <p className="reply-item-content">{reply.content}</p>
-                <div className="reply-item-footer">
-                  <button className="reply-action">
-                    <span className="material-icons">favorite</span>
-                    <span>{reply.likes}</span>
-                  </button>
-                </div>
+                {editingReplyId === reply.id ? (
+                  <div className="reply-edit-section">
+                    <textarea
+                      className="reply-edit-textarea"
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                    />
+                    <div className="reply-edit-buttons">
+                      <button onClick={() => handleUpdateReply(reply.id)}>
+                        저장
+                      </button>
+                      <button onClick={handleCancelEdit}>
+                        취소
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="reply-item-content">{reply.content}</p>
+                    <div className="reply-item-footer">
+                      <button className="reply-action">
+                        <span className="material-icons">favorite</span>
+                        <span>{reply.likes}</span>
+                      </button>
+                      <div className="reply-buttons">
+                        <button 
+                          className="reply-edit-button"
+                          onClick={() => handleEditClick(reply.id, reply.content)}
+                        >
+                          수정
+                        </button>
+                        <button 
+                          className="reply-delete-button"
+                          onClick={() => handleDeleteReply(reply.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ))
           )}

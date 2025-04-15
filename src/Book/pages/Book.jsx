@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Book.css";
 import Header from "../../Home/components/Header";
+import { getToken } from "../../utils/tokenManager";
 
 const Book = () => {
   const { id } = useParams();
@@ -101,6 +102,41 @@ const Book = () => {
     navigate(`/book/${id}/comment/${commentId}/reply`);
   };
 
+  const handleLikeClick = async (commentId) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/'); // 토큰이 없으면 로그인 페이지로 이동
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('좋아요 처리에 실패했습니다');
+      }
+
+      // 좋아요 수 갱신을 위해 댓글 목록 다시 불러오기
+      const newComments = await Promise.all(comments.map(async comment => {
+        if (comment.id === commentId) {
+          const likesResponse = await fetchCommentLikes(commentId);
+          return { ...comment, likes: likesResponse };
+        }
+        return comment;
+      }));
+      
+      setComments(newComments);
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
   const renderStars = (rating) => {
     return [1, 2, 3, 4, 5].map((star) => (
       <span 
@@ -198,7 +234,10 @@ const Book = () => {
                 </div>
                 <p className="comment-content">{comment.content}</p>
                 <div className="comment-footer">
-                  <button className="comment-action">
+                  <button 
+                    className="comment-action"
+                    onClick={() => handleLikeClick(comment.id)}
+                  >
                     <span className="material-icons">favorite</span>
                     <span>{comment.likes}</span>
                   </button>
