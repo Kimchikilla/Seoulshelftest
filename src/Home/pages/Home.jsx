@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Home.css";
 import Header from "../components/Header";
 import RecBook from "../components/Recommend";
+import { setToken } from "../../utils/tokenManager";
 
 const BookCard = ({ book, isCenter, onClick }) => (
   <div className={`book-card ${isCenter ? "center" : ""}`} onClick={onClick}>
@@ -16,9 +17,23 @@ const BookCard = ({ book, isCenter, onClick }) => (
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [centerIndex, setCenterIndex] = useState(0);
   const scrollRef = useRef(null);
   const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    // URL에서 토큰과 이름 파라미터 처리
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    
+    if (token) {
+      console.log('Token received in Home:', token);
+      setToken(token);
+      // 토큰 저장 후 URL 파라미터 제거
+      navigate('/home', { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const fetchPopularBooks = async () => {
