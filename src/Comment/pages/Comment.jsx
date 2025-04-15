@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './Comment.css';
+import { getToken } from '../../utils/tokenManager';
 
 const Comment = () => {
   const navigate = useNavigate();
@@ -14,11 +15,39 @@ const Comment = () => {
     setShowRatingPopup(true);
   };
 
-  const handleRatingSubmit = () => {
+  const handleRatingSubmit = async () => {
     if (rating === 0) return; // 별점을 선택하지 않은 경우 제출 불가
-    // TODO: 코멘트와 별점 제출 로직 구현
-    console.log('코멘트 제출:', comment, '별점:', rating);
-    navigate(`/book/${id}`);
+    
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/'); // 토큰이 없으면 로그인 페이지로 이동
+        return;
+      }
+
+      const response = await fetch('https://seoulshelf.duckdns.org/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          book_id: Number(id),
+          content: comment,
+          rating: Math.floor(rating)  // 별점을 정수형으로 변환
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('코멘트 작성에 실패했습니다.');
+      }
+
+      // 성공적으로 작성된 경우 책 상세 페이지로 이동
+      navigate(`/book/${id}`);
+    } catch (error) {
+      console.error('Error posting comment:', error);
+      alert('코멘트 작성에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
