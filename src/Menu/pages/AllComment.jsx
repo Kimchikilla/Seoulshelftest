@@ -33,7 +33,7 @@ const AllComment = () => {
     fetchAllComment();
   }, []);
 
-  ////// 코멘드 링크 달아야함
+  ////// 코멘드 링크 달아야함  피터틸 : 나이제 LLM 에 관심 없음 
   const goToDetail = (bookId) => {
     navigate(`/book/${bookId}`);
   };
