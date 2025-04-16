@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AllComment.css";
 import AllCommentHeader from "../components/AllCommentHeader";
 
-const dummyPosts = [
-  { id: 1, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 2, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 3, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 4, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 5, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 6, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 7, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 8, date: "03.29", title: "데미안을 읽어 봤노" },
-];
+const CommentList = ({ comment, onClick }) => (
+  <div onClick={onClick}>
+    <div className="comment-title">
+      <p>{comment.date}</p>
+      <h3>{comment.title}</h3>
+    </div>
+  </div>
+);
 
 const AllComment = () => {
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(6);
   const [animatedIds, setAnimatedIds] = useState([]);
+  const [Comments, setComments] = useState([]);
 
-  const goToDetail = (id) => {
-    navigate(`/book/${id}`);
+  useEffect(() => {
+    const fetchAllComment = async () => {
+      try {
+        // 코멘드 넣기
+        const response = await fetch("https://seoulshelf.duckdns.org/my/comment");
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching All Comment:", error);
+      }
+    };
+
+    fetchAllComment();
+  }, []);
+
+  ////// 코멘드 링크 달아야함
+  const goToDetail = (bookId) => {
+    navigate(`/book/${bookId}`);
   };
 
   const handleMoreClick = () => {
@@ -35,13 +50,11 @@ const AllComment = () => {
   const hasMore = visibleCount < dummyPosts.length;
 
   return (
-    <div className="menu-container">
-      <div className="post-wrapper">
-        {visiblePosts.map((post, idx) => (
-          <div key={post.id} className={`post-item ${idx === 1 ? "active" : ""} ${animatedIds.includes(post.id) ? "fade-in" : ""}`} onClick={() => goToDetail(post.id)}>
-            <div className="post-date">{post.date}</div>
-            <div className="post-title">{post.title}</div>
-          </div>
+    <div className="comment-container">
+      <AllCommentHeader />
+      <div className="comment-wrapper">
+        {Comments.map((comment) => (
+          <CommentList key={comment.id} comment={comment} onClick={() => goToDetail(comment.id)} />
         ))}
         {hasMore && (
           <div className="more-button" onClick={handleMoreClick}>
@@ -49,7 +62,6 @@ const AllComment = () => {
           </div>
         )}
       </div>
-      <AllCommentHeader />
     </div>
   );
 };

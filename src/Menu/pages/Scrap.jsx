@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AllComment.css";
-import AllCommentHeader from "../components/AllCommentHeader";
+import ScrapHeader from "../components/ScrapHeader";
 
-const dummyPosts = [
-  { id: 1, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 2, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 3, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 4, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 5, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 6, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 7, date: "03.29", title: "데미안을 읽어 봤는데요" },
-  { id: 8, date: "03.29", title: "데미안을 읽어 봤는데요" },
-];
+const ScrapList = ({ scrap, onClick }) => (
+  <div onClick={onClick}>
+    <div className="scrap-title">
+      <p>{scrap.date}</p>
+      <h3>{scrap.title}</h3>
+    </div>
+  </div>
+);
 
 const Scrap = () => {
   const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(3);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [animatedIds, setAnimatedIds] = useState([]);
+  const [Scraps, setScrap] = useState([]);
 
-  const goToDetail = (id) => {
-    navigate(`/book/${id}`);
+  useEffect(() => {
+    const fetchAllScrap = async () => {
+      try {
+        //// 스크랩 넣기
+        const response = await fetch("https://seoulshelf.duckdns.org/my/scraps");
+        const data = await response.json();
+        setScrap(data);
+      } catch (error) {
+        console.error("Error fetching All Scrap:", error);
+      }
+    };
+
+    fetchAllScrap();
+  }, []);
+
+  ////// 스크랩 링크 달아야함
+  const goToDetail = (bookId) => {
+    navigate(`/book/${bookId}`);
   };
 
   const handleMoreClick = () => {
@@ -35,13 +50,11 @@ const Scrap = () => {
   const hasMore = visibleCount < dummyPosts.length;
 
   return (
-    <div className="menu-container">
-      <div className="post-wrapper">
-        {visiblePosts.map((post, idx) => (
-          <div key={post.id} className={`post-item ${idx === 1 ? "active" : ""} ${animatedIds.includes(post.id) ? "fade-in" : ""}`} onClick={() => goToDetail(post.id)}>
-            <div className="post-date">{post.date}</div>
-            <div className="post-title">{post.title}</div>
-          </div>
+    <div className="comment-container">
+      <ScrapHeader />
+      <div className="comment-wrapper">
+        {Scraps.map((scrap) => (
+          <ScrapList key={scrap.id} scrap={scrap} onClick={() => goToDetail(scrap.id)} />
         ))}
         {hasMore && (
           <div className="more-button" onClick={handleMoreClick}>
@@ -49,7 +62,6 @@ const Scrap = () => {
           </div>
         )}
       </div>
-      <AllCommentHeader />
     </div>
   );
 };
