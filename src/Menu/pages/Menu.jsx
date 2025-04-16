@@ -19,6 +19,9 @@ const Menu = () => {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   const [books, setBooks] = useState([]);
+  const [reads, setReads] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [scraps, setScraps] = useState([]);
 
   useEffect(() => {
     const token = getToken();
@@ -35,19 +38,82 @@ const Menu = () => {
     }
   }, []);
 
+  // 1. 읽고 싶은 책 가져오기
   useEffect(() => {
-    const fetchPopularBooks = async () => {
+    const fetchWantToReadBooks = async () => {
       try {
-        // 읽은책 넣기
         const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
         const data = await response.json();
         setBooks(data);
       } catch (error) {
-        console.error("Error fetching popular books:", error);
+        console.error("읽고 싶은 책 가져오기 실패:", error);
       }
     };
 
-    fetchPopularBooks();
+    fetchWantToReadBooks();
+  }, []);
+
+  // 2. 읽은 책 가져오기
+  useEffect(() => {
+    const fetchReadBooks = async () => {
+      try {
+        const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
+        const data = await response.json();
+        setReads(data);
+      } catch (error) {
+        console.error("읽은 책 가져오기 실패:", error);
+      }
+    };
+
+    fetchReadBooks();
+  }, []);
+
+  // 3. 코멘트 가져오기
+  useEffect(() => {
+    const fetchAllComment = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const response = await fetch("https://seoulshelf.duckdns.org/my/comments", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching All Comment:", error);
+      }
+    };
+
+    fetchAllComment();
+  }, []);
+
+  // 4. 스크랩 가져오기
+  useEffect(() => {
+    const fetchScraps = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const response = await fetch("https://seoulshelf.duckdns.org/scraps", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+        setScraps(data);
+      } catch (error) {
+        console.error("Error fetching All scraps:", error);
+      }
+    };
+
+    fetchScraps();
   }, []);
 
   const handleBookClick = (bookId) => {
@@ -81,17 +147,20 @@ const Menu = () => {
         <div className="user-stats">
           <div>
             <button onClick={read} className="info-button">
-              0 읽은 책
+              <p className="number-p">{reads.length} </p>
+              <p className="buttom-p">읽은 책</p>
             </button>
           </div>
           <div>
             <button onClick={comment} className="info-button">
-              0 코멘트
+              <p className="number-p">{comments.length} </p>
+              <p className="buttom-p">코멘트</p>
             </button>
           </div>
           <div>
             <button onClick={scrap} className="info-button">
-              0 스크랩
+              <p className="number-p">{scraps.length} </p>
+              <p className="buttom-p">스크랩</p>
             </button>
           </div>
         </div>

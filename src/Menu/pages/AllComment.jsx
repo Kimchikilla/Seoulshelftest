@@ -3,26 +3,48 @@ import { useNavigate } from "react-router-dom";
 import "./AllComment.css";
 import AllCommentHeader from "../components/AllCommentHeader";
 
-const CommentList = ({ comment, onClick }) => (
-  <div onClick={onClick}>
-    <div className="comment-title">
-      <p>{comment.date}</p>
-      <h3>{comment.title}</h3>
+const CommentList = ({ comment, onClick, animate }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
+  return (
+    <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
+      <div className="comments-title">
+        <div className="post-item">
+          <div>
+            <p className="post-date">{formatDate(comment.created_at)}</p>
+            <p className="post-date">{comment.title}</p>
+          </div>
+          <h3 className="post-content">{comment.content}</h3>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const AllComment = () => {
   const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(6);
-  const [animatedIds, setAnimatedIds] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(5);
   const [Comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchAllComment = async () => {
       try {
-        // 코멘드 넣기
-        const response = await fetch("https://seoulshelf.duckdns.org/my/comment");
+        const token = localStorage.getItem("accessToken");
+
+        const response = await fetch("https://seoulshelf.duckdns.org/my/comments", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
         const data = await response.json();
         setComments(data);
       } catch (error) {
@@ -33,28 +55,28 @@ const AllComment = () => {
     fetchAllComment();
   }, []);
 
-  ////// 코멘드 링크 달아야함
   const goToDetail = (bookId) => {
     navigate(`/book/${bookId}`);
   };
 
   const handleMoreClick = () => {
-    const nextCount = visibleCount + 3;
-    const newIds = dummyPosts.slice(visibleCount, nextCount).map((post) => post.id);
-
-    setVisibleCount(nextCount);
-    setAnimatedIds((prev) => [...prev, ...newIds]);
+    setVisibleCount((prev) => prev + 3);
   };
 
-  const visiblePosts = dummyPosts.slice(0, visibleCount);
-  const hasMore = visibleCount < dummyPosts.length;
+  const visibleComments = Comments.slice(0, visibleCount);
+  const hasMore = visibleCount < Comments.length && Comments.length >= 5;
 
   return (
-    <div className="comment-container">
+    <div className="comments-container">
       <AllCommentHeader />
-      <div className="comment-wrapper">
-        {Comments.map((comment) => (
-          <CommentList key={comment.id} comment={comment} onClick={() => goToDetail(comment.id)} />
+      <div className="comments-wrapper">
+        {visibleComments.map((comment, index) => (
+          <CommentList
+            key={comment.id}
+            comment={comment}
+            onClick={() => goToDetail(comment.book_id)}
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용
+          />
         ))}
         {hasMore && (
           <div className="more-button" onClick={handleMoreClick}>
