@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Read.css";
 import ReadHeader from "../components/ReadHeader";
+import { getToken } from "../../utils/tokenManager";
 import bookImage from "../../assets/Book/XL.jpg"; // 예시 이미지
 
 const RecBookCard = ({ book, onClick }) => (
@@ -17,21 +18,36 @@ const RecBookCard = ({ book, onClick }) => (
 const Read = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+  const [reads, setReads] = useState([]);
 
   useEffect(() => {
-    const fetchPopularBooks = async () => {
+    const fetchReadBooks = async () => {
       try {
-        // 읽은책 넣기
-        const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
+        const token = getToken();
+        if (!token) {
+          navigate('/');
+          return;
+        }
+
+        const response = await fetch("https://seoulshelf.duckdns.org/read-books", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('읽은 책 목록을 가져오는데 실패했습니다.');
+        }
+        
         const data = await response.json();
-        setBooks(data);
+        setReads(data);
       } catch (error) {
-        console.error("Error fetching popular books:", error);
+        console.error("Error fetching read books:", error);
       }
     };
 
-    fetchPopularBooks();
-  }, []);
+    fetchReadBooks();
+  }, [navigate]);
 
   const handleBookClick = (bookId) => {
     navigate(`/book/${bookId}`);
@@ -67,7 +83,7 @@ const Read = () => {
     <div className="menu-container">
       <ReadHeader />
       <div className="book-grid">
-        {books.map((book) => (
+        {reads.map((book) => (
           <RecBookCard key={book.id} book={book} onClick={() => handleBookClick(book.id)} />
         ))}
       </div>

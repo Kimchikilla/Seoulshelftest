@@ -42,7 +42,14 @@ const Menu = () => {
   useEffect(() => {
     const fetchWantToReadBooks = async () => {
       try {
-        const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
+        const token = getToken();
+        if (!token) return;
+
+        const response = await fetch("https://seoulshelf.duckdns.org/want-to-read", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setBooks(data);
       } catch (error) {
@@ -57,7 +64,14 @@ const Menu = () => {
   useEffect(() => {
     const fetchReadBooks = async () => {
       try {
-        const response = await fetch("https://seoulshelf.duckdns.org/spring-books");
+        const token = getToken();
+        if (!token) return;
+
+        const response = await fetch("https://seoulshelf.duckdns.org/read-books", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setReads(data);
       } catch (error) {
