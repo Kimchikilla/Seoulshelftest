@@ -41,7 +41,7 @@
 .search-modal-close-button {
   background: none;
   border: none;
-  padding: 8px;
+  padding:1px;
   cursor: pointer;
   display: flex;
   align-items: center;
