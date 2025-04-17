@@ -89,6 +89,11 @@
   gap: 16px;
   position: relative;
   scroll-behavior: smooth;
+
+  justify-content: flex-start; /* 좌측 정렬 */
+  flex-wrap: nowrap; /* 줄바꿈 없음 (스크롤) */
+  min-width: 0; /* 크기 오버플로 방지 */
+  min-width: 100%;
 }
 
 .user-stats {
@@ -135,6 +140,7 @@
 }
 
 .wbook-title h3 {
+  align-items: center;
   font-size: 0.8rem;
   color: #333;
   display: -webkit-box;
@@ -145,7 +151,7 @@
 }
 
 .wbook-title p {
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: #333;
 }
 
@@ -163,4 +169,25 @@
 .wbook h4 {
   font-size: 1.05rem;
   font-weight: 600;
+}
+
+/* no-scroll일 땐 좌측 정렬만 */
+.no-scroll {
+  display: flex;
+  gap: 16px;
+  padding: 20px 25px;
+  justify-content: flex-start;
+}
+
+/* scroll일 땐 캐러셀 스타일 */
+.scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding: 20px 25px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
