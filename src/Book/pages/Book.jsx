@@ -16,6 +16,7 @@ const Book = () => {
   const [hoverRating, setHoverRating] = useState(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isRead, setIsRead] = useState(false);
+  const [scrappedComments, setScrappedComments] = useState(new Set());
 
   const fetchCommentLikes = async (commentId) => {
     try {
@@ -89,6 +90,27 @@ const Book = () => {
     }
   };
 
+  const checkScrapStatus = async () => {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('https://seoulshelf.duckdns.org/scraps', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const scraps = await response.json();
+        const scrappedIds = new Set(scraps.map(scrap => scrap.comment_id));
+        setScrappedComments(scrappedIds);
+      }
+    } catch (error) {
+      console.error('Error checking scrap status:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchBookData = async () => {
       try {
@@ -100,9 +122,10 @@ const Book = () => {
         setBookData(data);
         setIsLoading(false);
         
-        // 책 정보를 가져온 후 읽었어요와 북마크 상태 확인
+        // 책 정보를 가져온 후 읽었어요와 북마크, 스크랩 상태 확인
         checkReadStatus();
         checkBookmarkStatus();
+        checkScrapStatus();
       } catch (error) {
         console.error("Error fetching book data:", error);
         setIsLoading(false);
@@ -271,6 +294,54 @@ const Book = () => {
     } catch (error) {
       console.error("Error toggling like:", error);
       alert("좋아요 처리에 실패했습니다.");
+    }
+  };
+
+  const handleScrapClick = async (commentId) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate("/");
+        return;
+      }
+
+      const isScrapped = scrappedComments.has(commentId);
+
+      if (!isScrapped) {
+        // 스크랩 추가
+        const response = await fetch('https://seoulshelf.duckdns.org/scraps', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            comment_id: commentId
+          }),
+        });
+
+        if (response.ok) {
+          setScrappedComments(prev => new Set([...prev, commentId]));
+        }
+      } else {
+        // 스크랩 삭제
+        const response = await fetch(`https://seoulshelf.duckdns.org/scraps/${commentId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          setScrappedComments(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(commentId);
+            return newSet;
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling scrap status:', error);
     }
   };
 
@@ -490,6 +561,12 @@ const Book = () => {
                         <button className="comment-action" onClick={() => handleReplyClick(comment.id)}>
                           <span className="material-icons">chat_bubble_outline</span>
                           <span>{comment.replies}</span>
+                        </button>
+                        <button 
+                          className={`comment-action ${scrappedComments.has(comment.id) ? 'active' : ''}`}
+                          onClick={() => handleScrapClick(comment.id)}
+                        >
+                          <span className="material-icons">bookmark</span>
                         </button>
                       </div>
                       <div className="comment-buttons">

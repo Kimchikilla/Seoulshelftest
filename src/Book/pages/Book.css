@@ -240,11 +240,22 @@ body {
 }
 
 .comment-action .material-icons {
-  font-size: 16px;
+  font-size: 20px;
+  transition: all 0.2s ease;
 }
 
 .comment-action:hover {
   color: #00a896;
+}
+
+.comment-action.active .material-icons {
+  color: #00A896;
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+}
+
+.comment-action:hover .material-icons {
+  transform: scale(1.1);
 }
 
 .edit-section {
