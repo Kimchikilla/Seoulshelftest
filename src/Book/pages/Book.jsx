@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Book.css";
-import Header from "../../Home/components/Header";
+import BookHeader from "../components/BookHeader";
 import { getToken } from "../../utils/tokenManager";
 
 const Book = () => {
@@ -53,7 +53,7 @@ const Book = () => {
       const token = getToken();
       if (!token) return;
 
-      const response = await fetch('https://seoulshelf.duckdns.org/read-books', {
+      const response = await fetch("https://seoulshelf.duckdns.org/read-books", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,11 +61,11 @@ const Book = () => {
 
       if (response.ok) {
         const readBooks = await response.json();
-        const isCurrentBookRead = readBooks.some(book => book.book_id === Number(id));
+        const isCurrentBookRead = readBooks.some((book) => book.book_id === Number(id));
         setIsRead(isCurrentBookRead);
       }
     } catch (error) {
-      console.error('Error checking read status:', error);
+      console.error("Error checking read status:", error);
     }
   };
 
@@ -74,7 +74,7 @@ const Book = () => {
       const token = getToken();
       if (!token) return;
 
-      const response = await fetch('https://seoulshelf.duckdns.org/want-to-read', {
+      const response = await fetch("https://seoulshelf.duckdns.org/want-to-read", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,11 +82,11 @@ const Book = () => {
 
       if (response.ok) {
         const bookmarks = await response.json();
-        const isCurrentBookBookmarked = bookmarks.some(book => book.book_id === Number(id));
+        const isCurrentBookBookmarked = bookmarks.some((book) => book.book_id === Number(id));
         setIsBookmarked(isCurrentBookBookmarked);
       }
     } catch (error) {
-      console.error('Error checking bookmark status:', error);
+      console.error("Error checking bookmark status:", error);
     }
   };
 
@@ -95,7 +95,7 @@ const Book = () => {
       const token = getToken();
       if (!token) return;
 
-      const response = await fetch('https://seoulshelf.duckdns.org/scraps', {
+      const response = await fetch("https://seoulshelf.duckdns.org/scraps", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,11 +103,11 @@ const Book = () => {
 
       if (response.ok) {
         const scraps = await response.json();
-        const scrappedIds = new Set(scraps.map(scrap => scrap.comment_id));
+        const scrappedIds = new Set(scraps.map((scrap) => scrap.comment_id));
         setScrappedComments(scrappedIds);
       }
     } catch (error) {
-      console.error('Error checking scrap status:', error);
+      console.error("Error checking scrap status:", error);
     }
   };
 
@@ -121,7 +121,7 @@ const Book = () => {
         const data = await response.json();
         setBookData(data);
         setIsLoading(false);
-        
+
         // 책 정보를 가져온 후 읽었어요와 북마크, 스크랩 상태 확인
         checkReadStatus();
         checkBookmarkStatus();
@@ -172,20 +172,20 @@ const Book = () => {
     try {
       const token = getToken();
       if (!token) {
-        navigate('/');
+        navigate("/");
         return;
       }
 
       if (!isBookmarked) {
         // 읽고 싶어요 등록
-        const response = await fetch('https://seoulshelf.duckdns.org/want-to-read', {
-          method: 'POST',
+        const response = await fetch("https://seoulshelf.duckdns.org/want-to-read", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            book_id: Number(id)
+            book_id: Number(id),
           }),
         });
 
@@ -195,7 +195,7 @@ const Book = () => {
       } else {
         // 읽고 싶어요 취소
         const response = await fetch(`https://seoulshelf.duckdns.org/want-to-read/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -206,7 +206,7 @@ const Book = () => {
         }
       }
     } catch (error) {
-      console.error('Error toggling bookmark status:', error);
+      console.error("Error toggling bookmark status:", error);
     }
   };
 
@@ -214,20 +214,20 @@ const Book = () => {
     try {
       const token = getToken();
       if (!token) {
-        navigate('/');
+        navigate("/");
         return;
       }
 
       if (!isRead) {
         // 읽었어요 등록
-        const response = await fetch('https://seoulshelf.duckdns.org/read-books', {
-          method: 'POST',
+        const response = await fetch("https://seoulshelf.duckdns.org/read-books", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            book_id: Number(id)
+            book_id: Number(id),
           }),
         });
 
@@ -237,7 +237,7 @@ const Book = () => {
       } else {
         // 읽었어요 취소
         const response = await fetch(`https://seoulshelf.duckdns.org/read-books/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -248,7 +248,7 @@ const Book = () => {
         }
       }
     } catch (error) {
-      console.error('Error toggling read status:', error);
+      console.error("Error toggling read status:", error);
     }
   };
 
@@ -309,31 +309,31 @@ const Book = () => {
 
       if (!isScrapped) {
         // 스크랩 추가
-        const response = await fetch('https://seoulshelf.duckdns.org/scraps', {
-          method: 'POST',
+        const response = await fetch("https://seoulshelf.duckdns.org/scraps", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            comment_id: commentId
+            comment_id: commentId,
           }),
         });
 
         if (response.ok) {
-          setScrappedComments(prev => new Set([...prev, commentId]));
+          setScrappedComments((prev) => new Set([...prev, commentId]));
         }
       } else {
         // 스크랩 삭제
         const response = await fetch(`https://seoulshelf.duckdns.org/scraps/${commentId}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.ok) {
-          setScrappedComments(prev => {
+          setScrappedComments((prev) => {
             const newSet = new Set(prev);
             newSet.delete(commentId);
             return newSet;
@@ -341,13 +341,13 @@ const Book = () => {
         }
       }
     } catch (error) {
-      console.error('Error toggling scrap status:', error);
+      console.error("Error toggling scrap status:", error);
     }
   };
 
   const handleEditClick = async (commentId) => {
     try {
-      console.log('Edit click, commentId:', commentId);
+      console.log("Edit click, commentId:", commentId);
       const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -383,7 +383,7 @@ const Book = () => {
       }
 
       const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -451,7 +451,7 @@ const Book = () => {
   if (isLoading) {
     return (
       <div className="book-detail-container">
-        <Header />
+        <BookHeader />
         <div className="loading">로딩중...</div>
       </div>
     );
@@ -460,7 +460,7 @@ const Book = () => {
   if (!bookData) {
     return (
       <div className="book-detail-container">
-        <Header />
+        <BookHeader />
         <div className="error">책을 찾을 수 없습니다.</div>
       </div>
     );
@@ -468,7 +468,7 @@ const Book = () => {
 
   return (
     <div className="book-detail-container">
-      <Header />
+      <BookHeader />
       <div className="book-detail">
         <div className="book-info-section">
           <h1 className="book-detail-title">{bookData.title}</h1>
@@ -478,7 +478,6 @@ const Book = () => {
         <div className="book-cover-section">
           <img src={bookData.image_url} alt={bookData.title} className="book-detail-cover" />
         </div>
-
 
         <div className="book-rating-section">
           <div className="rating-container">
@@ -497,10 +496,7 @@ const Book = () => {
         </div>
 
         <div className="action-icons">
-          <button 
-            className={`action-button action-button-bookmark ${isBookmarked ? 'active' : ''}`} 
-            onClick={handleBookmarkClick}
-          >
+          <button className={`action-button action-button-bookmark ${isBookmarked ? "active" : ""}`} onClick={handleBookmarkClick}>
             <span className="material-symbols-outlined" style={{ "--fill": isBookmarked ? 1 : 0 }}>
               bookmark
             </span>
@@ -512,16 +508,12 @@ const Book = () => {
             <span className="action-text">코멘트</span>
           </button>
 
-          <button 
-            className={`action-button action-button-read ${isRead ? 'active' : ''}`} 
-            onClick={handleReadClick}
-          >
+          <button className={`action-button action-button-read ${isRead ? "active" : ""}`} onClick={handleReadClick}>
             <span className="material-symbols-outlined">{isRead ? "check" : "add"}</span>
             <span className="action-text">읽었어요</span>
           </button>
         </div>
 
-      
         <div className="comments-section">
           <h2 className="comments-title">코멘트</h2>
           <div className="comments-list">
@@ -562,10 +554,7 @@ const Book = () => {
                           <span className="material-icons">chat_bubble_outline</span>
                           <span>{comment.replies}</span>
                         </button>
-                        <button 
-                          className={`comment-action ${scrappedComments.has(comment.id) ? 'active' : ''}`}
-                          onClick={() => handleScrapClick(comment.id)}
-                        >
+                        <button className={`comment-action ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
                           <span className="material-icons">bookmark</span>
                         </button>
                       </div>

@@ -25,7 +25,7 @@ const Read = () => {
       try {
         const token = getToken();
         if (!token) {
-          navigate('/');
+          navigate("/");
           return;
         }
 
@@ -34,11 +34,11 @@ const Read = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        
+
         if (!response.ok) {
-          throw new Error('읽은 책 목록을 가져오는데 실패했습니다.');
+          throw new Error("읽은 책 목록을 가져오는데 실패했습니다.");
         }
-        
+
         const data = await response.json();
         setReads(data);
       } catch (error) {
@@ -84,7 +84,7 @@ const Read = () => {
       <ReadHeader />
       <div className="book-grid">
         {reads.map((book) => (
-          <RecBookCard key={book.id} book={book} onClick={() => handleBookClick(book.id)} />
+          <RecBookCard key={book.book_id} book={book} onClick={() => handleBookClick(book.book_id)} />
         ))}
       </div>
     </div>

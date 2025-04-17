@@ -1,9 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./MenuHeader.css";
 
 const MenuHeader = () => {
-  const navigate = useNavigate();
-
   return (
     <header className="header">
       <button className="notification-button">
@@ -12,8 +10,10 @@ const MenuHeader = () => {
       <Link to="/home" className="header-title-link">
         <h1 className="header-title">Seoulshelf</h1>
       </Link>
-      <button className="back-button" onClick={() => navigate(-1)}>
-        <span className="material-icons">arrow_back</span>
+      <button className="back-button">
+        <Link to="/home" className="header-title-link">
+          <span className="material-icons">arrow_back</span>
+        </Link>
       </button>
     </header>
   );
