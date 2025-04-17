@@ -3,58 +3,80 @@ import { useNavigate } from "react-router-dom";
 import "./AllComment.css";
 import ScrapHeader from "../components/ScrapHeader";
 
-const ScrapList = ({ scrap, onClick }) => (
-  <div onClick={onClick}>
-    <div className="scrap-title">
-      <p>{scrap.date}</p>
-      <h3>{scrap.title}</h3>
+const Scrapist = ({ scrap, onClick, animate }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
+  return (
+    <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
+      <div className="comments-title">
+        <div className="post-item">
+          <div>
+            <p className="post-date">{formatDate(scrap.scrap_time)}</p>
+            <p className="post-date">{scrap.title}</p>
+          </div>
+          <h3 className="post-content">{scrap.content}</h3>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Scrap = () => {
   const navigate = useNavigate();
-  const [visibleCount, setVisibleCount] = useState(6);
-  const [animatedIds, setAnimatedIds] = useState([]);
-  const [Scraps, setScrap] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(5);
+  const [Scraps, setScraps] = useState([]);
 
   useEffect(() => {
-    const fetchAllScrap = async () => {
+    const fetchAllComment = async () => {
       try {
-        //// 스크랩 넣기
-        const response = await fetch("https://seoulshelf.duckdns.org/my/scraps");
+        const token = localStorage.getItem("accessToken");
+
+        const response = await fetch("https://seoulshelf.duckdns.org/scraps", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
         const data = await response.json();
-        setScrap(data);
+        setScraps(data);
       } catch (error) {
-        console.error("Error fetching All Scrap:", error);
+        console.error("Error fetching All Comment:", error);
       }
     };
 
-    fetchAllScrap();
+    fetchAllComment();
   }, []);
 
-  ////// 스크랩 링크 달아야함
   const goToDetail = (bookId) => {
     navigate(`/book/${bookId}`);
   };
 
   const handleMoreClick = () => {
-    const nextCount = visibleCount + 3;
-    const newIds = dummyPosts.slice(visibleCount, nextCount).map((post) => post.id);
-
-    setVisibleCount(nextCount);
-    setAnimatedIds((prev) => [...prev, ...newIds]);
+    setVisibleCount((prev) => prev + 3);
   };
 
-  const visiblePosts = dummyPosts.slice(0, visibleCount);
-  const hasMore = visibleCount < dummyPosts.length;
+  const visibleComments = Scraps.slice(0, visibleCount);
+  const hasMore = visibleCount < Scraps.length && Scraps.length >= 5;
 
   return (
-    <div className="comment-container">
+    <div className="comments-container">
       <ScrapHeader />
-      <div className="comment-wrapper">
-        {Scraps.map((scrap) => (
-          <ScrapList key={scrap.id} scrap={scrap} onClick={() => goToDetail(scrap.id)} />
+      <div className="comments-wrapper">
+        {visibleComments.map((scrap, index) => (
+          <Scrapist
+            key={scrap.id}
+            scrap={scrap}
+            onClick={() => goToDetail(scrap.book_id)}
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용
+          />
         ))}
         {hasMore && (
           <div className="more-button" onClick={handleMoreClick}>

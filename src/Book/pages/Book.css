@@ -6,7 +6,8 @@
   overflow-y: scroll;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
@@ -20,7 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 60px;  /* 하단 여백 증가 */
+  padding-bottom: 60px; /* 하단 여백 증가 */
 }
 
 .book-info-section {
@@ -37,7 +38,7 @@ body {
 }
 
 .book-detail-author {
-  font-size: 1.0rem;
+  font-size: 1rem;
   color: #666;
 }
 
@@ -80,15 +81,15 @@ body {
 }
 
 .star.full {
-  color: #00A896;
+  color: #00a896;
 }
 
 .star.half {
-  color: #00A896;
+  color: #00a896;
 }
 
 .star.empty {
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .rating-text-container {
@@ -219,7 +220,7 @@ body {
 }
 
 .comment-action:hover {
-  color: #00A896;
+  color: #00a896;
 }
 
 .edit-section {
@@ -230,7 +231,7 @@ body {
   width: 100%;
   min-height: 80px;
   padding: 12px;
-  border: 1px solid #00A896;
+  border: 1px solid #00a896;
   border-radius: 8px;
   resize: none;
   font-size: 0.9rem;
@@ -252,7 +253,7 @@ body {
 }
 
 .edit-buttons button:first-child {
-  background-color: #00A896;
+  background-color: #00a896;
   color: white;
 }
 
@@ -298,7 +299,7 @@ body {
 }
 
 .comment-edit-button:hover {
-  color: #00A896;
+  color: #00a896;
 }
 
 .comment-delete-button:hover {
