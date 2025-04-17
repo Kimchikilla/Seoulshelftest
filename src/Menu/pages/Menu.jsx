@@ -50,7 +50,13 @@ const Menu = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        if (!response.ok) {
+          throw new Error('읽고 싶은 책 목록을 가져오는데 실패했습니다');
+        }
+
         const data = await response.json();
+        console.log('읽고 싶은 책 목록:', data);
         setBooks(data);
       } catch (error) {
         console.error("읽고 싶은 책 가져오기 실패:", error);
