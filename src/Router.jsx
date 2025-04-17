@@ -19,7 +19,6 @@ export default function Router() {
         <Route path="/auth/callback" element={<AuthCallback />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/menu" element={<Menu />}></Route>
-        <Route path="/mypage" element={<Mypage />}></Route>
         <Route path="/book/:id" element={<Book />} />
         <Route path="/book/:id/comment" element={<Comment />} />
         <Route path="/book/:id/comment/:commentId/reply" element={<Reply />} />
