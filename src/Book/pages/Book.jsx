@@ -397,7 +397,7 @@ const Book = () => {
       if (!response.ok) {
         throw new Error("코멘트 수정에 실패했습니다");
       }
-
+ 
       // 코멘트 목록 갱신
       const updatedComments = comments.map((comment) => (comment.id === commentId ? { ...comment, content: editContent.trim(), rating: Number(editRating) } : comment));
 
