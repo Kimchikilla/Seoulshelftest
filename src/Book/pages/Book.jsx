@@ -47,6 +47,48 @@ const Book = () => {
     }
   };
 
+  const checkReadStatus = async () => {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('https://seoulshelf.duckdns.org/read-books', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const readBooks = await response.json();
+        const isCurrentBookRead = readBooks.some(book => book.book_id === Number(id));
+        setIsRead(isCurrentBookRead);
+      }
+    } catch (error) {
+      console.error('Error checking read status:', error);
+    }
+  };
+
+  const checkBookmarkStatus = async () => {
+    try {
+      const token = getToken();
+      if (!token) return;
+
+      const response = await fetch('https://seoulshelf.duckdns.org/want-to-read', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const bookmarks = await response.json();
+        const isCurrentBookBookmarked = bookmarks.some(book => book.book_id === Number(id));
+        setIsBookmarked(isCurrentBookBookmarked);
+      }
+    } catch (error) {
+      console.error('Error checking bookmark status:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchBookData = async () => {
       try {
@@ -57,6 +99,10 @@ const Book = () => {
         const data = await response.json();
         setBookData(data);
         setIsLoading(false);
+        
+        // 책 정보를 가져온 후 읽었어요와 북마크 상태 확인
+        checkReadStatus();
+        checkBookmarkStatus();
       } catch (error) {
         console.error("Error fetching book data:", error);
         setIsLoading(false);
@@ -99,12 +145,88 @@ const Book = () => {
     fetchComments();
   }, [id]);
 
-  const handleBookmarkClick = () => {
-    setIsBookmarked(!isBookmarked);
+  const handleBookmarkClick = async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      if (!isBookmarked) {
+        // 읽고 싶어요 등록
+        const response = await fetch('https://seoulshelf.duckdns.org/want-to-read', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            book_id: Number(id)
+          }),
+        });
+
+        if (response.ok) {
+          setIsBookmarked(true);
+        }
+      } else {
+        // 읽고 싶어요 취소
+        const response = await fetch(`https://seoulshelf.duckdns.org/want-to-read/${id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          setIsBookmarked(false);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling bookmark status:', error);
+    }
   };
 
-  const handleReadClick = () => {
-    setIsRead(!isRead);
+  const handleReadClick = async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate('/');
+        return;
+      }
+
+      if (!isRead) {
+        // 읽었어요 등록
+        const response = await fetch('https://seoulshelf.duckdns.org/read-books', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            book_id: Number(id)
+          }),
+        });
+
+        if (response.ok) {
+          setIsRead(true);
+        }
+      } else {
+        // 읽었어요 취소
+        const response = await fetch(`https://seoulshelf.duckdns.org/read-books/${id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          setIsRead(false);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling read status:', error);
+    }
   };
 
   const handleCommentClick = () => {
@@ -286,6 +408,7 @@ const Book = () => {
           <img src={bookData.image_url} alt={bookData.title} className="book-detail-cover" />
         </div>
 
+
         <div className="book-rating-section">
           <div className="rating-container">
             <div className="rating-display">
@@ -299,22 +422,35 @@ const Book = () => {
               <span className="rating-label">평균평점</span>
               <span className="rating-value">{bookData.average_rating}</span>
             </div>
-            <div className="action-icons">
-              <button className="action-button" onClick={handleBookmarkClick}>
-                <span className="material-symbols-outlined" style={{ "--fill": isBookmarked ? 1 : 0 }}>
-                  bookmark
-                </span>
-                <span className="action-text">읽고싶어요</span>
-              </button>
-
-              <button className="action-button" onClick={handleReadClick}>
-                <span className="material-symbols-outlined">{isRead ? "check" : "add"}</span>
-                <span className="action-text">읽었어요</span>
-              </button>
-            </div>
           </div>
         </div>
 
+        <div className="action-icons">
+          <button 
+            className={`action-button action-button-bookmark ${isBookmarked ? 'active' : ''}`} 
+            onClick={handleBookmarkClick}
+          >
+            <span className="material-symbols-outlined" style={{ "--fill": isBookmarked ? 1 : 0 }}>
+              bookmark
+            </span>
+            <span className="action-text">{isBookmarked ? "읽고 싶어요" : "읽고 싶어요"}</span>
+          </button>
+
+          <button className="action-button action-button-comment" onClick={handleCommentClick}>
+            <span className="material-symbols-outlined">edit_note</span>
+            <span className="action-text">코멘트</span>
+          </button>
+
+          <button 
+            className={`action-button action-button-read ${isRead ? 'active' : ''}`} 
+            onClick={handleReadClick}
+          >
+            <span className="material-symbols-outlined">{isRead ? "check" : "add"}</span>
+            <span className="action-text">읽었어요</span>
+          </button>
+        </div>
+
+      
         <div className="comments-section">
           <h2 className="comments-title">코멘트</h2>
           <div className="comments-list">
