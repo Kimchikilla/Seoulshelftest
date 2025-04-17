@@ -143,6 +143,7 @@ const Book = () => {
 
   const handleEditClick = async (commentId) => {
     try {
+      console.log('Edit click, commentId:', commentId);
       const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
         headers: {
           'Authorization': `Bearer ${getToken()}`
@@ -178,7 +179,7 @@ const Book = () => {
       }
 
       const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
