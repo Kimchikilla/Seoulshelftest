@@ -190,11 +190,7 @@ const Book = () => {
       }
 
       const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
-<<<<<<< HEAD
         method: 'PATCH',
-=======
-        method: "PUT",
->>>>>>> bda88e4085730de534e6f723253e6ab3cabf2964
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
