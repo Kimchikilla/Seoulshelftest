@@ -100,7 +100,7 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-around;
-  padding: 16px 0; /* 선이랑 내용 간격 */
+  padding: 16px 0; /* 선이랑 내용 간격앙 기모띠 */ 
   border-top: 1px solid #eee; /* 위 선 */
   border-bottom: 1px solid #eee; /* 아래 선 */
 }
