@@ -4,6 +4,9 @@ import "./Home.css";
 import Header from "../components/Header";
 import RecBook from "../components/Recommend";
 import { setToken } from "../../utils/tokenManager";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const BookCard = ({ book, isCenter, onClick }) => (
   <div className={`book-card ${isCenter ? "center" : ""}`} onClick={onClick}>
@@ -61,37 +64,23 @@ const Home = () => {
     fetchPopularBooks();
   }, []);
 
-  useEffect(() => {
-    if (scrollRef.current && books.length > 0) {
-      const container = scrollRef.current;
-      const containerWidth = container.offsetWidth;
-      const itemWidth = containerWidth * 0.38 + 20; // item + gap
-      const centerOffset = (containerWidth - itemWidth) / 2;
-      container.scrollLeft = itemWidth * 3 + centerOffset;
-    }
-  }, [books]);
-
-  const handleScroll = () => {
-    if (!scrollRef.current || books.length === 0) return;
-
-    const container = scrollRef.current;
-    const containerWidth = container.offsetWidth;
-    const itemWidth = containerWidth * 0.38 + 20;
-    const totalItems = books.length;
-    const scrollLeft = container.scrollLeft;
-    const maxScroll = itemWidth * (totalItems + 3);
-
-    if (scrollLeft <= itemWidth * 1.5) {
-      container.scrollLeft = scrollLeft + itemWidth * totalItems;
-    } else if (scrollLeft >= maxScroll - itemWidth * 1.5) {
-      container.scrollLeft = scrollLeft - itemWidth * totalItems;
-    }
-
-    const centerOffset = (containerWidth - itemWidth) / 2;
-    const newIndex = Math.round((scrollLeft - centerOffset - itemWidth * 3) / itemWidth);
-    if (newIndex !== centerIndex && newIndex >= 0 && newIndex < books.length) {
-      setCenterIndex(newIndex);
-    }
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 3,
+    speed: 300,
+    focusOnSelect: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: "90px"
+        }
+      }
+    ]
   };
 
   const handleBookClick = (bookId) => {
@@ -103,22 +92,17 @@ const Home = () => {
       <Header />
       <div className="book-section">
         <h2 className="section-title">지금 많이 읽고 있어요</h2>
-        <div className="book-list" ref={scrollRef} onScroll={handleScroll}>
-          {/* 앞쪽 복제 */}
-          {books.slice(-3).map((book, index) => (
-            <BookCard key={`head-${index}`} book={book} />
+        <Slider {...settings}>
+          {books.map((book) => (
+            <div key={book.id} className="book-card">
+              <img src={book.image_url} alt={book.title} className="book-cover" onClick={() => handleBookClick(book.id)} />
+              <div className="book-info">
+                <h3 className="book-title">{book.title}</h3>
+                <p className="book-author">{book.author}</p>
+              </div>
+            </div>
           ))}
-
-          {/* 실제 목록 */}
-          {books.map((book, index) => (
-            <BookCard key={index} book={book} isCenter={index === centerIndex} onClick={() => handleBookClick(book.id)} />
-          ))}
-
-          {/* 뒤쪽 복제 */}
-          {books.slice(0, 3).map((book, index) => (
-            <BookCard key={`tail-${index}`} book={book} />
-          ))}
-        </div>
+        </Slider>
       </div>
       <RecBook />
     </div>
