@@ -75,7 +75,7 @@ const Notificaiton = () => {
             key={comment.id}
             comment={comment}
             onClick={() => goToDetail(comment.book_id)}
-            animate={index >= 5} // 5개 이후부터 애니메이션 적용
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용 
           />
         ))}
         {hasMore && (
@@ -86,6 +86,6 @@ const Notificaiton = () => {
       </div>
     </div>
   );
-};
+}; // 병합용 주석석
 
 export default Notificaiton;
