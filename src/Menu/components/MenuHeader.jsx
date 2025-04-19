@@ -5,7 +5,9 @@ const MenuHeader = () => {
   return (
     <header className="header">
       <button className="notification-button">
-        <span className="material-icons">notifications</span>
+        <Link to="/notification" className="header-title-link">
+          <span className="material-icons">notifications</span>
+        </Link>
       </button>
       <Link to="/home" className="header-title-link">
         <h1 className="header-title">Seoulshelf</h1>

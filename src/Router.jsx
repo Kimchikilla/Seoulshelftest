@@ -9,10 +9,11 @@ import Reply from "./Comment/pages/Reply";
 import Read from "./Menu/pages/Read.jsx";
 import AllComment from "./Menu/pages/AllComment.jsx";
 import Scrap from "./Menu/pages/Scrap.jsx";
+import Notificaiton from "./Notification/pages/Notification.jsx";
 
 export default function Router() {
   return (
-    <> 
+    <>
       <Routes>
         <Route path="/" element={<Login />}></Route>
         <Route path="/auth/callback" element={<AuthCallback />}></Route>
@@ -24,6 +25,7 @@ export default function Router() {
         <Route path="/Read" element={<Read />} />
         <Route path="/allcomment" element={<AllComment />} />
         <Route path="/scrap" element={<Scrap />} />
+        <Route path="/notification" element={<Notificaiton />} />
       </Routes>
     </>
   );

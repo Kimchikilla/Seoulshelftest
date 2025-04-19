@@ -40,13 +40,13 @@ const Home = () => {
   useEffect(() => {
     // URL에서 토큰과 이름 파라미터 처리
     const params = new URLSearchParams(location.search);
-    const token = params.get('token');
-    
+    const token = params.get("token");
+
     if (token) {
-      console.log('Token received in Home:', token);
+      console.log("Token received in Home:", token);
       setToken(token);
       // 토큰 저장 후 URL 파라미터 제거
-      navigate('/home', { replace: true });
+      navigate("/home", { replace: true });
     }
   }, [location, navigate]);
 
@@ -55,7 +55,12 @@ const Home = () => {
       try {
         const response = await fetch("https://seoulshelf.duckdns.org/popular-books");
         const data = await response.json();
-        setBooks(data);
+
+        const booksWithoutId1 = data.filter((book) => book.id !== 1);
+        const booksWithId1 = data.filter((book) => book.id === 1);
+
+        const sortedData = [...booksWithoutId1.sort((a, b) => a.id - b.id), ...booksWithId1];
+        setBooks(sortedData);
       } catch (error) {
         console.error("Error fetching popular books:", error);
       }
@@ -68,7 +73,7 @@ const Home = () => {
     className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: "60px",
+    centerPadding: "80px",
     slidesToShow: 3,
     speed: 300,
     focusOnSelect: true,
@@ -77,10 +82,10 @@ const Home = () => {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          centerPadding: "90px"
-        }
-      }
-    ]
+          centerPadding: "90px",
+        },
+      },
+    ],
   };
 
   const handleBookClick = (bookId) => {
