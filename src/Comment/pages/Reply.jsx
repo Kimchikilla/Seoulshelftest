@@ -88,7 +88,7 @@ const Reply = () => {
         throw new Error('답글 작성에 실패했습니다');
       }
 
-      // 응답 데이터 받기
+      // 응답 데이터 받기 앙 기모띠
       const newReplyData = await response.json();
       
       // 새 답글을 목록에 추가
