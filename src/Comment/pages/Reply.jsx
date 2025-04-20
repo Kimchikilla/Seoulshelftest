@@ -264,8 +264,6 @@ const Reply = () => {
                     <p className="reply-item-content">{reply.content}</p>
                     <div className="reply-item-footer">
                       <button className="reply-action">
-                        <span className="material-icons">favorite</span>
-                        <span>{reply.likes}</span>
                       </button>
                       <div className="reply-buttons">
                         <button 
