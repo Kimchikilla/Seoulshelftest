@@ -13,6 +13,7 @@ const NotiList = ({ comment, onClick, animate }) => {
   };
 
   return (
+    //Noti ID 받아와야함
     <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
       <div className="comments-title">
         <div className="post-item">
@@ -33,11 +34,11 @@ const Notificaiton = () => {
   const [Comments, setComments] = useState([]);
 
   useEffect(() => {
-    const fetchAllComment = async () => {
+    const fetchAllNoti = async () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const response = await fetch("https://seoulshelf.duckdns.org/my/comments", {
+        const response = await fetch("https://seoulshelf.duckdns.org/notification", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,11 +49,11 @@ const Notificaiton = () => {
         const data = await response.json();
         setComments(data);
       } catch (error) {
-        console.error("Error fetching All Comment:", error);
+        console.error("Error fetching All Notification:", error);
       }
     };
 
-    fetchAllComment();
+    fetchAllNoti();
   }, []);
 
   const goToDetail = (bookId) => {
@@ -69,13 +70,14 @@ const Notificaiton = () => {
   return (
     <div className="comments-container">
       <NotiHeader />
+      <div className="Noti-read">모두 읽음</div>
       <div className="comments-wrapper">
         {visibleComments.map((comment, index) => (
           <NotiList
             key={comment.id}
             comment={comment}
             onClick={() => goToDetail(comment.book_id)}
-            animate={index >= 5} // 5개 이후부터 애니메이션 적용 
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용
           />
         ))}
         {hasMore && (
