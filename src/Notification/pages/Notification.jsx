@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Notification.css";
 import NotiHeader from "../components/NotiHeader";
 
-const NotiList = ({ comment, onClick, animate }) => {
+const NotiList = ({ noti, onClick, animate }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -13,15 +13,15 @@ const NotiList = ({ comment, onClick, animate }) => {
   };
 
   return (
-    //Noti ID 받아와야함
     <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
       <div className="comments-title">
         <div className="post-item">
           <div>
-            <p className="post-date">{formatDate(comment.created_at)}</p>
-            <p className="post-date">{comment.title}</p>
+            <p className="post-date">{formatDate(noti.created_at)}</p>
+            {/* bookid 고려 */}
+            {/* <p className="post-date">{noti.sender_name}</p> */}
           </div>
-          <h3 className="post-content">{comment.content}</h3>
+          <h3 className="post-content">{noti.message}</h3>
         </div>
       </div>
     </div>
@@ -72,11 +72,11 @@ const Notificaiton = () => {
       <NotiHeader />
       <div className="Noti-read">모두 읽음</div>
       <div className="comments-wrapper">
-        {visibleComments.map((comment, index) => (
+        {visibleComments.map((noti, index) => (
           <NotiList
-            key={comment.id}
-            comment={comment}
-            onClick={() => goToDetail(comment.book_id)}
+            key={noti.id}
+            comment={noti}
+            onClick={() => goToDetail(noti.content_id)}
             animate={index >= 5} // 5개 이후부터 애니메이션 적용 ,허허허허
           />
         ))}
