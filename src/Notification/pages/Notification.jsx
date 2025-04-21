@@ -77,7 +77,7 @@ const Notificaiton = () => {
             key={comment.id}
             comment={comment}
             onClick={() => goToDetail(comment.book_id)}
-            animate={index >= 5} // 5개 이후부터 애니메이션 적용
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용 ,허허허허
           />
         ))}
         {hasMore && (
