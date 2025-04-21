@@ -38,7 +38,7 @@ const Notificaiton = () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const response = await fetch("https://seoulshelf.duckdns.org/notification", {
+        const response = await fetch("https://seoulshelf.duckdns.org/notifications", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
