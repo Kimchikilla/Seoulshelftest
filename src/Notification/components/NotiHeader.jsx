@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./NotiHeader.css";
 
-const MenuHeader = () => {
+const NotiHeader = () => {
   return (
     <header className="header">
       <h1 className="read-title">알림</h1>
@@ -14,4 +14,4 @@ const MenuHeader = () => {
   );
 };
 
-export default MenuHeader;
+export default NotiHeader;

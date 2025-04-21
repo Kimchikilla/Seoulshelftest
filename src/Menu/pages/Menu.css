@@ -1,11 +1,10 @@
 .menu-container {
   width: 100%;
-  height: calc(100vh - 64px);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 60px;
+  max-width: 768px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
   background-color: #ffffff;
+  min-height: calc(100vh - 64px); /* 헤더 높이만큼 빼줌 */
+  padding: 20px 0;
 }
 
 .user-info {
@@ -100,7 +99,7 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-around;
-  padding: 16px 0; /* 선이랑 내용 간격앙 기모띠 */ 
+  padding: 16px 0; /* 선이랑 내용 간격앙 기모띠 */
   border-top: 1px solid #eee; /* 위 선 */
   border-bottom: 1px solid #eee; /* 아래 선 */
 }
