@@ -190,3 +190,13 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.menu-background {
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+  gap: 15px;
+  border: 2px;
+  border-radius: 8px;
+}

@@ -165,23 +165,25 @@ const Menu = () => {
           <h3>{nickname ? `${nickname} 님` : "닉네임 로드 실패"}</h3>
         </div>
         <div className="user-stats">
-          <div>
-            <button onClick={read} className="info-button">
-              <p className="number-p">{reads.length} </p>
-              <p className="buttom-p">읽은 책</p>
-            </button>
-          </div>
-          <div>
-            <button onClick={comment} className="info-button">
-              <p className="number-p">{comments.length} </p>
-              <p className="buttom-p">코멘트</p>
-            </button>
-          </div>
-          <div>
-            <button onClick={scrap} className="info-button">
-              <p className="number-p">{scraps.length} </p>
-              <p className="buttom-p">스크랩</p>
-            </button>
+          <div className="menu-background">
+            <div>
+              <button onClick={read} className="info-button">
+                <p className="number-p">{reads.length} </p>
+                <p className="buttom-p">읽은 책</p>
+              </button>
+            </div>
+            <div>
+              <button onClick={comment} className="info-button">
+                <p className="number-p">{comments.length} </p>
+                <p className="buttom-p">코멘트</p>
+              </button>
+            </div>
+            <div>
+              <button onClick={scrap} className="info-button">
+                <p className="number-p">{scraps.length} </p>
+                <p className="buttom-p">스크랩</p>
+              </button>
+            </div>
           </div>
         </div>
         <div className="wbook">

@@ -40,23 +40,31 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.login-comment {
+  font-weight: 400;
+  color: black;
 }
 
 .login-bottom {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-bottom: 80px;
 }
 
 .logo {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 500;
-  color: #00A896;
+  color: #00a896;
   letter-spacing: -0.5px;
   word-break: keep-all;
   margin: 0;
-  margin-bottom: 130px;
 }
 
 .google-login-btn {
@@ -69,12 +77,11 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #ffffff;
-  color: #00A896;
+  color: #00a896;
   font-size: 1rem;
   letter-spacing: -0.3px;
   cursor: pointer;
   transition: background-color 0.2s;
-  
 }
 
 .google-login-btn:hover {
@@ -114,7 +121,7 @@ form {
 .login-button {
   width: 100%;
   padding: 12px;
-  background-color: #00A896;
+  background-color: #00a896;
   color: white;
   border: none;
   border-radius: 8px;
@@ -125,7 +132,7 @@ form {
 }
 
 .login-button:hover {
-  background-color: #008F7F;
+  background-color: #008f7f;
 }
 
 .login-footer {
@@ -239,7 +246,7 @@ form {
 
 /* 입력 필드 포커스 스타일 */
 .form-group input:focus {
-  border-color: #00A896;
+  border-color: #00a896;
   box-shadow: 0 0 0 2px rgba(0, 168, 150, 0.1);
 }
 
@@ -269,4 +276,4 @@ form {
   .login-button:active {
     transform: scale(0.98);
   }
-} 
+}
