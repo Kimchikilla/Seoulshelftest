@@ -8,7 +8,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     // Google OAuth 인증 서버로 리다이렉트
-    window.location.href = "http://15.164.214.242:5001/auth/google";
+    window.location.href = "https://seoulshelf.duckdns.org/auth/google";
   };
 
   return (
