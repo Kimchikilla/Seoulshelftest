@@ -16,7 +16,7 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = () => {
-    // Google OAuth 인증 서버로 리다이렉트
+    // Google OAuth 인증 서버로 리다이렉 트
     window.location.href = "https://seoulshelf.duckdns.org/auth/google";
   };
 
