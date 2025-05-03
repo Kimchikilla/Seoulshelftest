@@ -504,7 +504,7 @@ const Book = () => {
           </button>
 
           <button className="action-button action-button-comment" onClick={handleCommentClick}>
-            <span className="material-symbols-outlined">edit_note</span>
+            <span className="material-symbols-outlined">edit</span>
             <span className="action-text">코멘트</span>
           </button>
 

@@ -71,12 +71,12 @@ const Comment = () => {
   return (
     <div className="comment-container">
       <header className="comment-header">
-        <button className="comment-header-button" onClick={handleSubmit}>
-          작성
-        </button>
-        <h1 className="comment-header-title">{bookTitle}</h1>
         <button className="comment-header-button" onClick={() => navigate(-1)}>
           <span className="material-icons">arrow_back</span>
+        </button>
+        <h1 className="comment-header-title">{bookTitle}</h1>
+        <button className="comment-header-button" onClick={handleSubmit}>
+          작성
         </button>
       </header>
       
