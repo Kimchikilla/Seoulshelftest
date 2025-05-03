@@ -323,14 +323,22 @@ body {
   gap: 8px;
 }
 
-.comment-edit-button,
-.comment-delete-button {
+.comment-edit-button{
   background: none;
   border: none;
   padding: 4px 8px;
   font-size: 0.8rem;
   cursor: pointer;
   color: #666;
+}
+
+.comment-delete-button {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #FF6D6D;
 }
 
 .comment-edit-button:hover {
