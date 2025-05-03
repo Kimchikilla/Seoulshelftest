@@ -108,7 +108,7 @@ body {
 .rating-value {
   font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: #00A896;
 }
 
 .action-icons {
@@ -165,7 +165,7 @@ body {
 
 .comments-section {
   width: 100%;
-  padding: 0 20px;
+  padding: 0 10px;
   margin-top: 32px;
 }
 
@@ -195,6 +195,17 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+}
+
+.comment-bookmark {
+  display: flex;
+  align-items: left;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.6rem;
+  padding: 0px;
+  cursor: pointer;
 }
 
 .comment-author {

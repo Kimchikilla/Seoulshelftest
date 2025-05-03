@@ -520,6 +520,9 @@ const Book = () => {
             {comments.map((comment) => (
               <div key={comment.id} className="comment-card">
                 <div className="comment-header">
+                        <button className={`comment-bookmark ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
+                          <span className="material-icons">bookmark</span>
+                        </button>
                   <span className="comment-author">{comment.author}</span>
                   {editingCommentId === comment.id ? (
                     <div className="edit-rating">
@@ -553,9 +556,6 @@ const Book = () => {
                         <button className="comment-action" onClick={() => handleReplyClick(comment.id)}>
                           <span className="material-icons">chat_bubble_outline</span>
                           <span>{comment.replies}</span>
-                        </button>
-                        <button className={`comment-action ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
-                          <span className="material-icons">bookmark</span>
                         </button>
                       </div>
                       <div className="comment-buttons">
