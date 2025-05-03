@@ -203,9 +203,6 @@ const Reply = () => {
   return (
     <div className="reply-container">
       <header className="reply-header">
-        <button className="reply-header-button" onClick={handleSubmit}>
-          작성
-        </button>
         <h1 className="reply-header-title">답글 작성</h1>
         <button className="reply-header-button" onClick={() => navigate(-1)}>
           <span className="material-icons">arrow_back</span>
@@ -294,6 +291,9 @@ const Reply = () => {
             value={reply}
             onChange={(e) => setReply(e.target.value)}
           />
+        <button className="reply-submit-button" onClick={handleSubmit}>
+          작성
+        </button>
         </div>
       </div>
     </div>

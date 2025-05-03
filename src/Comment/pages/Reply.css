@@ -124,6 +124,7 @@
 
 .reply-input-section {
   margin-top: 20px;
+  position: relative;
 }
 
 .reply-textarea {
@@ -270,8 +271,7 @@
   margin-left: auto;
 }
 
-.reply-edit-button,
-.reply-delete-button {
+.reply-edit-button{
   background: none;
   border: none;
   padding: 4px 8px;
@@ -280,10 +280,32 @@
   color: #666;
 }
 
+
+.reply-delete-button {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #FF6D6D;
+}
+
 .reply-edit-button:hover {
   color: #00A896;
 }
 
 .reply-delete-button:hover {
   color: #dc3545;
+}
+
+.reply-submit-button {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  color: #00A896;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: right;
 }
