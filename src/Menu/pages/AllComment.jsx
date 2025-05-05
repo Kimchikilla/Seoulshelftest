@@ -2,25 +2,62 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AllComment.css";
 import AllCommentHeader from "../components/AllCommentHeader";
+import { getToken } from "../../utils/tokenManager";
 
 const CommentList = ({ comment, onClick, animate }) => {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
+  const navigate = useNavigate();
+  const [comments, setComments] = useState([]);
+  const renderStars = (rating) => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <span key={star} className={`material-icons star ${star <= rating ? "full" : "empty"}`}>
+        star
+      </span>
+    ));
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("코멘트를 삭제하시겠습니까?")) return;
+
+    try {
+      const token = getToken();
+      if (!token) {
+        navigate("/");
+        return;
+      }
+
+      const response = await fetch(`https://seoulshelf.duckdns.org/comments/${commentId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("코멘트 삭제에 실패했습니다");
+      }
+
+      // 코멘트 목록에서 삭제된 코멘트 제거
+      setComments(comments.filter((comment) => comment.id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      alert("코멘트 삭제에 실패했습니다.");
+    }
   };
 
   return (
     <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
       <div className="comments-title">
         <div className="post-item">
-          <div>
-            <p className="post-date">{formatDate(comment.created_at)}</p>
-            <p className="post-date">{comment.title}</p>
+          <div className="allcomment-star">
+            <p className="post-title">{comment.title}</p>
+            <div className="comment-rating">{renderStars(comment.rating)}</div>
           </div>
           <h3 className="post-content">{comment.content}</h3>
+          <div className="post-del">
+            <button className="comment-delete-button" onClick={() => handleDeleteComment(comment.comment_id)}>
+              삭제
+            </button>
+          </div>
         </div>
       </div>
     </div>

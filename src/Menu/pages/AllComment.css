@@ -18,11 +18,12 @@
 }
 
 .post-item {
-  border-top: 1px solid #eee;
+  border: 1px solid #eee;
   padding: 5px 16px;
   cursor: pointer;
   transition: border 0.2s;
   margin-bottom: -20px;
+  border-radius: 10px;
 }
 
 .post-item:hover {
@@ -70,4 +71,38 @@
 .post-content {
   padding-top: 10px;
   font-size: 1rem;
+  padding: 10px;
+}
+
+.allcomment-star {
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-del {
+  margin-left: 0;
+  text-align: right;
+}
+
+.comment-rating {
+  margin-left: 0;
+  text-align: right;
+}
+
+.post-title {
+  font-size: 13px;
+  color: #888;
+}
+
+.post-author {
+  font-size: 13px;
+  color: #888;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* 아이콘과 작성자 사이 간격 */
 }

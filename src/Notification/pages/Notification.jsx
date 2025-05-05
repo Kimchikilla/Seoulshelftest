@@ -6,10 +6,17 @@ import NotiHeader from "../components/NotiHeader";
 const NotiList = ({ noti, onClick, animate }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
+    const now = new Date();
+    const diffMs = now - date;
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+
+    if (diffMin < 1) return "방금 전";
+    if (diffMin < 60) return `${diffMin}분 전`;
+    if (diffHour < 24) return `${diffHour}시간 전`;
+    return `${diffDay}일 전`;
   };
 
   return (
@@ -18,8 +25,6 @@ const NotiList = ({ noti, onClick, animate }) => {
         <div className="post-item">
           <div>
             <p className="post-date">{formatDate(noti.created_at)}</p>
-            {/* bookid 고려 */}
-            {/* <p className="post-date">{noti.sender_name}</p> */}
           </div>
           <h3 className="post-content">{noti.message}</h3>
         </div>
@@ -75,9 +80,9 @@ const Notificaiton = () => {
         {visibleComments.map((noti, index) => (
           <NotiList
             key={noti.id}
-            comment={noti}
+            noti={noti}
             onClick={() => goToDetail(noti.content_id)}
-            animate={index >= 5} // 5개 이후부터 애니메이션 적용 ,허허허허  
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용 ,허허허허
           />
         ))}
         {hasMore && (

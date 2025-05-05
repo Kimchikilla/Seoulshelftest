@@ -4,22 +4,26 @@ import "./AllComment.css";
 import ScrapHeader from "../components/ScrapHeader";
 
 const Scrapist = ({ scrap, onClick, animate }) => {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
+  const renderStars = (rating) => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <span key={star} className={`material-icons star ${star <= rating ? "full" : "empty"}`}>
+        star
+      </span>
+    ));
   };
 
   return (
     <div onClick={onClick} className={`comments-item ${animate ? "comment-fade-in" : ""}`}>
       <div className="comments-title">
         <div className="post-item">
-          <div>
-            <p className="post-date">{formatDate(scrap.scrap_time)}</p>
-            <p className="post-date">{scrap.title}</p>
+          <div className="allcomment-star">
+            <div className="right-section">
+              <span className="material-icons">bookmark</span>
+              <p className="post-author">{scrap.comment_author}</p>
+            </div>
+            <div className="comment-rating">{renderStars(scrap.rating)}</div>
           </div>
+
           <h3 className="post-content">{scrap.content}</h3>
         </div>
       </div>
