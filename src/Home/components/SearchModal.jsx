@@ -18,7 +18,7 @@ const SearchModal = ({ isOpen, onClose }) => {
     }
   }, []);
 
-  const popularSearches = ["베스트셀러", "자기계발", "소설", "에세이", "인문학"];
+  const popularSearches = ["한강", "당뇨", "비트코인", "주식", "저속노화"];
 
   const handleSearch = async (e) => {
     e.preventDefault();
