@@ -92,6 +92,7 @@ const Comment = () => {
       {showRatingPopup && (
         <div className="rating-popup">
           <div className="rating-popup-content">
+            <p className="rating-popup-description">별점을 선택해주세요</p>
             <div className="stars">
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
@@ -106,6 +107,7 @@ const Comment = () => {
               ))}
             </div>
             <div className="rating-buttons">
+              <button onClick={() => setShowRatingPopup(false)}>취소</button>
               <button onClick={handleRatingSubmit} disabled={rating === 0}>확인</button>
             </div>
           </div>
