@@ -17,6 +17,15 @@ const Book = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isRead, setIsRead] = useState(false);
   const [scrappedComments, setScrappedComments] = useState(new Set());
+  const [popup, setPopup] = useState({ show: false, message: "", type: "" });
+
+  // 팝업 알림을 표시하는 함수
+  const showPopup = (message, type = "success") => {
+    setPopup({ show: true, message, type });
+    setTimeout(() => {
+      setPopup({ show: false, message: "", type: "" });
+    }, 2000);
+  };
 
   const fetchCommentLikes = async (commentId) => {
     try {
@@ -322,6 +331,9 @@ const Book = () => {
 
         if (response.ok) {
           setScrappedComments((prev) => new Set([...prev, commentId]));
+          showPopup("코멘트가 스크랩되었습니다.", "success");
+        } else {
+          showPopup("스크랩 추가에 실패했습니다.", "error");
         }
       } else {
         // 스크랩 삭제
@@ -338,10 +350,14 @@ const Book = () => {
             newSet.delete(commentId);
             return newSet;
           });
+          showPopup("스크랩이 취소되었습니다.", "success");
+        } else {
+          showPopup("스크랩 취소에 실패했습니다.", "error");
         }
       }
     } catch (error) {
       console.error("Error toggling scrap status:", error);
+      showPopup("오류가 발생했습니다.", "error");
     }
   };
 
@@ -461,6 +477,11 @@ const Book = () => {
     return (
       <div className="book-detail-container">
         <BookHeader />
+        {popup.show && (
+          <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>
+            {popup.message}
+          </div>
+        )}
         <div className="error">책을 찾을 수 없습니다.</div>
       </div>
     );
@@ -469,6 +490,11 @@ const Book = () => {
   return (
     <div className="book-detail-container">
       <BookHeader />
+      {popup.show && (
+        <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>
+          {popup.message}
+        </div>
+      )}
       <div className="book-detail">
         <div className="book-info-section">
           <h1 className="book-detail-title">{bookData.title}</h1>
@@ -520,10 +546,12 @@ const Book = () => {
             {comments.map((comment) => (
               <div key={comment.id} className="comment-card">
                 <div className="comment-header">
-                        <button className={`comment-bookmark ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
-                          <span className="material-icons">bookmark</span>
-                        </button>
-                  <span className="comment-author">{comment.author}</span>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <button className={`comment-bookmark ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
+                      <span className="material-icons">bookmark</span>
+                    </button>
+                    <span className="comment-author">{comment.author}</span>
+                  </div>
                   {editingCommentId === comment.id ? (
                     <div className="edit-rating">
                       {[1, 2, 3, 4, 5].map((star) => (

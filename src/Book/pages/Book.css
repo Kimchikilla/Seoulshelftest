@@ -195,17 +195,17 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  /* 왜안돼노 씨발 */
 }
 
 .comment-bookmark {
   display: flex;
-  align-items: left;
+  align-items: center;
   background: none;
   border: none;
   color: #666;
   font-size: 0.6rem;
-  padding: 0px;
+  padding: 0;
+  margin-right: 4px;
   cursor: pointer;
 }
 
@@ -213,6 +213,8 @@ body {
   font-weight: 600;
   color: #333;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
 }
 
 .comment-rating {
@@ -358,4 +360,30 @@ body {
 
 .comment-delete-button:hover {
   color: #dc3545;
+}
+
+/* 팝업 알림 스타일 */
+.popup-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 168, 150, 0.9);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup-notification.show {
+  opacity: 1;
+}
+
+.popup-notification.error {
+  background-color: rgba(255, 109, 109, 0.9);
 }
