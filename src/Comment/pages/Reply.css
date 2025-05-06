@@ -49,6 +49,7 @@
 .reply-content {
   flex: 1;
   padding: 20px;
+  padding-bottom: 100px; /* URL ud45cuc2dcuc904uc744 uace0ub824ud55c ud558ub2e8 uc5ecubc31 ucd94uac00 */
   overflow-y: auto;
   position: relative;
 }
@@ -124,6 +125,7 @@
 
 .reply-input-section {
   margin-top: 20px;
+  margin-bottom: 40px; /* ud558ub2e8 uc5ecubc31 ucd94uac00 */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -140,6 +142,7 @@
   color: #333;
   background-color: #ffffff;
   scroll-margin-top: 100px;
+  scroll-margin-bottom: 150px; /* ud558ub2e8 uc2a4ud06cub864 uc5ecubc31 ucd94uac00 */
 }
 
 .reply-textarea::placeholder {
@@ -303,14 +306,28 @@
 .reply-submit-button {
   padding: 8px 16px;
   border: none;
-  background: none;
-  color: #00A896;
+  background-color: #00A896;
+  color: white;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   position: absolute;
   bottom: 8px;
   right: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* 모바일 환경에서 작성 버튼 위치 조정 */
+@media screen and (max-width: 768px) {
+  .reply-submit-button {
+    position: fixed;
+    bottom: 60px; /* URL 표시줄 위에 위치하도록 조정 */
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+  }
 }
 
 .character-count {
