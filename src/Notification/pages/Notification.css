@@ -31,7 +31,7 @@
 
 /* .post-item.active {
   border: 2px solid #007bff;
-} */ 
+} */
 
 .post-date {
   font-size: 12px;
@@ -75,4 +75,30 @@
 .Noti-read {
   color: #333;
   font-size: 1rem;
+  background-color: #ffffff;
+}
+
+.Notiread-section {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  width: 100%; /* 버튼이 라인 끝까지 밀릴 수 있도록 전체 너비 사용 */
+  padding: 0 50px; /* 선택적으로 양옆에 여백 추가 */
+}
+
+.red-dot {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  margin: 10px;
+}
+
+.no-noti-message {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 18px;
 }
