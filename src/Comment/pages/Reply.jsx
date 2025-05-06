@@ -300,7 +300,7 @@ const Reply = () => {
           />
           <div className="character-count">{reply.length}자</div>
           <button className="reply-submit-button" onClick={handleSubmit}>
-            작성
+            등록
           </button>
         </div>
       </div>
