@@ -26,10 +26,10 @@ const Login = () => {
     setIsLoading(true);
     
     // 1.5초 동안 로딩 화면을 표시한 후 리다이렉트
+    // Google OAuth 인증 서버로 리다이렉트
+    window.location.href = "https://seoulshelf.duckdns.org/auth/google";
     setTimeout(() => {
-      // Google OAuth 인증 서버로 리다이렉트
-      window.location.href = "https://seoulshelf.duckdns.org/auth/google";
-    }, 1500);
+    }, 1000);
   };
 
   return (
