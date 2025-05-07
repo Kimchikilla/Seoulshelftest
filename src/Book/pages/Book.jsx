@@ -413,7 +413,7 @@ const Book = () => {
       if (!response.ok) {
         throw new Error("코멘트 수정에 실패했습니다");
       }
- 
+
       // 코멘트 목록 갱신
       const updatedComments = comments.map((comment) => (comment.id === commentId ? { ...comment, content: editContent.trim(), rating: Number(editRating) } : comment));
 
@@ -477,11 +477,7 @@ const Book = () => {
     return (
       <div className="book-detail-container">
         <BookHeader />
-        {popup.show && (
-          <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>
-            {popup.message}
-          </div>
-        )}
+        {popup.show && <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>{popup.message}</div>}
         <div className="error">책을 찾을 수 없습니다.</div>
       </div>
     );
@@ -490,11 +486,7 @@ const Book = () => {
   return (
     <div className="book-detail-container">
       <BookHeader />
-      {popup.show && (
-        <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>
-          {popup.message}
-        </div>
-      )}
+      {popup.show && <div className={`popup-notification ${popup.type === "error" ? "error" : ""} show`}>{popup.message}</div>}
       <div className="book-detail">
         <div className="book-info-section">
           <h1 className="book-detail-title">{bookData.title}</h1>
@@ -546,9 +538,11 @@ const Book = () => {
             {comments.map((comment) => (
               <div key={comment.id} className="comment-card">
                 <div className="comment-header">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <button className={`comment-bookmark ${scrappedComments.has(comment.id) ? "active" : ""}`} onClick={() => handleScrapClick(comment.id)}>
-                      <span className="material-icons">bookmark</span>
+                      <span className="material-icons" style={{ color: "#00B493" }}>
+                        bookmark
+                      </span>
                     </button>
                     <span className="comment-author">{comment.author}</span>
                   </div>

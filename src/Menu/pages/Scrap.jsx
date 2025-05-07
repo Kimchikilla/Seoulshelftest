@@ -18,7 +18,10 @@ const Scrapist = ({ scrap, onClick, animate }) => {
         <div className="post-item">
           <div className="allcomment-star">
             <div className="right-section">
-              <span className="material-icons">bookmark</span>
+              <span className="material-icons" style={{ color: "#00B493" }}>
+                bookmark
+              </span>
+
               <p className="post-author">{scrap.comment_author}</p>
             </div>
             <div className="comment-rating">{renderStars(scrap.rating)}</div>
