@@ -17,7 +17,7 @@ const Login = () => {
       // 토큰이 있으면 홈으로 이동하기 전에 로딩 상태를 활성화
       setTimeout(() => {
         navigate("/home");
-      }, 1000); // 1초 후 홈 페이지로 이동
+      }, 1500); // 1초 후 홈 페이지로 이동
     }
   }, [navigate]);
 
@@ -27,9 +27,9 @@ const Login = () => {
     
     // 1.5초 동안 로딩 화면을 표시한 후 리다이렉트
     // Google OAuth 인증 서버로 리다이렉트
-    window.location.href = "https://seoulshelf.duckdns.org/auth/google";
     setTimeout(() => {
-    }, 1000);
+      window.location.href = "https://seoulshelf.duckdns.org/auth/google";
+    }, 500);
   };
 
   return (

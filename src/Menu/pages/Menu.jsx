@@ -17,11 +17,25 @@ const RecBookCard = ({ book, onClick }) => (
 
 const Menu = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [nickname, setNickname] = useState("");
   const [books, setBooks] = useState([]);
   const [reads, setReads] = useState([]);
   const [comments, setComments] = useState([]);
   const [scraps, setScraps] = useState([]);
+
+  // 로딩 상태 관리
+  useEffect(() => {
+    // 초기 로딩 상태 활성화
+    setIsLoading(true);
+    
+    // 1초 후에 로딩 상태 비활성화
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const token = getToken();
@@ -159,47 +173,56 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      <MenuHeader />
-      <div className="user-info">
-        <div className="nickname">
-          <h3>{nickname ? `${nickname} 님` : "닉네임 로드 실패"}</h3>
+      {isLoading ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">로딩 중...</p>
         </div>
-        <div className="user-stats">
-          <div className="menu-background">
-            <div>
-              <button onClick={read} className="info-button">
-                <p className="number-p">{reads.length} </p>
-                <p className="buttom-p">읽은 책</p>
-              </button>
+      ) : (
+        <>
+          <MenuHeader />
+          <div className="user-info">
+            <div className="nickname">
+              <h3>{nickname ? `${nickname} 님` : "닉네임 로드 실패"}</h3>
             </div>
-            <div>
-              <button onClick={comment} className="info-button">
-                <p className="number-p">{comments.length} </p>
-                <p className="buttom-p">코멘트</p>
-              </button>
+            <div className="user-stats">
+              <div className="menu-background">
+                <div>
+                  <button onClick={read} className="info-button">
+                    <p className="number-p">{reads.length} </p>
+                    <p className="buttom-p">읽은 책</p>
+                  </button>
+                </div>
+                <div>
+                  <button onClick={comment} className="info-button">
+                    <p className="number-p">{comments.length} </p>
+                    <p className="buttom-p">코멘트</p>
+                  </button>
+                </div>
+                <div>
+                  <button onClick={scrap} className="info-button">
+                    <p className="number-p">{scraps.length} </p>
+                    <p className="buttom-p">스크랩</p>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div>
-              <button onClick={scrap} className="info-button">
-                <p className="number-p">{scraps.length} </p>
-                <p className="buttom-p">스크랩</p>
+            <div className="wbook">
+              <h4>읽고싶어요</h4>
+              <div className="wbook-list">
+                {books.map((book) => (
+                  <RecBookCard key={book.book_id} book={book} onClick={() => handleBookClick(book.book_id)} />
+                ))}
+              </div>
+            </div>
+            <div className="logOut">
+              <button onClick={handleLogout} className="logout-button">
+                로그아웃
               </button>
             </div>
           </div>
-        </div>
-        <div className="wbook">
-          <h4>읽고싶어요</h4>
-          <div className="wbook-list">
-            {books.map((book) => (
-              <RecBookCard key={book.book_id} book={book} onClick={() => handleBookClick(book.book_id)} />
-            ))}
-          </div>
-        </div>
-        <div className="logOut">
-          <button onClick={handleLogout} className="logout-button">
-            로그아웃
-          </button>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

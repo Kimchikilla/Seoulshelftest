@@ -19,6 +19,20 @@ const BookCard = ({ book, isCenter, onClick }) => (
 );
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // 페이지 로딩 시 로딩 상태 활성화
+    setIsLoading(true);
+    
+    // 2초 후에 로딩 상태 비활성화
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
@@ -94,22 +108,31 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Header />
-      <div className="book-section">
-        <h2 className="section-title">지금 많이 읽고 있어요</h2>
-        <Slider {...settings}>
-          {books.map((book) => (
-            <div key={book.id} className="book-card">
-              <img src={book.image_url} alt={book.title} className="book-cover" onClick={() => handleBookClick(book.id)} />
-              <div className="book-info">
-                <h3 className="book-title">{book.title}</h3>
-                <p className="book-author">{book.author}</p>
-              </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
-      <RecBook />
+      {isLoading ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">로딩 중...</p>
+        </div>
+      ) : (
+        <>
+          <Header />
+          <div className="book-section">
+            <h2 className="section-title">지금 많이 읽고 있어요</h2>
+            <Slider {...settings}>
+              {books.map((book) => (
+                <div key={book.id} className="book-card">
+                  <img src={book.image_url} alt={book.title} className="book-cover" onClick={() => handleBookClick(book.id)} />
+                  <div className="book-info">
+                    <h3 className="book-title">{book.title}</h3>
+                    <p className="book-author">{book.author}</p>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <RecBook />
+        </>
+      )}
     </div>
   );
 };
