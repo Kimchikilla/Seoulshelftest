@@ -99,22 +99,27 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-around;
-  padding: 16px 0; /* 선이랑 내용 간격앙 기모띠 */
+  padding: 16px 0; /* 선이랑 내용 간격앙 기모띄 */
   border-top: 1px solid #eee; /* 위 선 */
   border-bottom: 1px solid #eee; /* 아래 선 */
+  width: 100%;
 }
 
 .info-button {
   width: 100%;
-  padding: 20px 40px;
+  padding: 10px 0;
   margin-top: auto;
   background: none;
   border: none;
   color: #333;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 100;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .user-info h4 {
@@ -144,6 +149,7 @@
   color: #333;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* 보여줄 줄 수 */
+  line-clamp: 2; /* 표준 속성 */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,11 +164,13 @@
   font-size: 1rem;
   padding-bottom: 5px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .buttom-p {
   font-size: 1rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .wbook h4 {
@@ -199,4 +207,5 @@
   gap: 15px;
   border: 2px;
   border-radius: 8px;
+  width: 100%;
 }

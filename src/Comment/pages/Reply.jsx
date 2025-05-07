@@ -12,6 +12,7 @@ const Reply = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [editContent, setEditContent] = useState('');
+  const textareaRef = React.useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -286,14 +287,21 @@ const Reply = () => {
 
         <div className="reply-input-section">
           <textarea
+            ref={textareaRef}
             className="reply-textarea"
             placeholder="답글을 입력해주세요"
             value={reply}
             onChange={(e) => setReply(e.target.value)}
+            onClick={() => {
+              if (textareaRef.current) {
+                textareaRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
           />
-        <button className="reply-submit-button" onClick={handleSubmit}>
-          작성
-        </button>
+          <div className="character-count">{reply.length}자</div>
+          <button className="reply-submit-button" onClick={handleSubmit}>
+            등록
+          </button>
         </div>
       </div>
     </div>
