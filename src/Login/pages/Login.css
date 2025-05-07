@@ -61,10 +61,11 @@ body {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 500;
-  color: #00a896;
+  color: #00b493;
   letter-spacing: -0.5px;
   word-break: keep-all;
   margin: 0;
+  width: 100px;
 }
 
 .google-login-btn {
@@ -77,7 +78,7 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #ffffff;
-  color: #00a896;
+  color: #00b493;
   font-size: 1rem;
   letter-spacing: -0.3px;
   cursor: pointer;
@@ -121,10 +122,10 @@ form {
 .login-button {
   width: 100%;
   padding: 12px;
-  background-color: #00a896;
+  background-color: #00b493;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -132,7 +133,7 @@ form {
 }
 
 .login-button:hover {
-  background-color: #008f7f;
+  background-color: #00b493;
 }
 
 .login-footer {

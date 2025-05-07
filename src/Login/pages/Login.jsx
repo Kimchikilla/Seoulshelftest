@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import GoogleIcon from "../../assets/google-icon.svg";
-import BookIcon from "../../assets/loginBookIcon.svg";
+import BookIcon from "../../assets/mainlogo.svg";
+import headerTitle from "../../assets/header_title.svg";
 import { getToken } from "../../utils/tokenManager";
 
 const Login = () => {
@@ -26,7 +27,7 @@ const Login = () => {
         <div className="login-top">
           <img src={BookIcon} alt="book" />
           <h4 className="login-comment">책과 우리의 공간</h4>
-          <h1 className="logo">Seoulshelf</h1>
+          <img src={headerTitle} alt="서울책장" className="logo" />
         </div>
         <div className="login-bottom">
           <button className="google-login-btn" onClick={handleGoogleLogin}>
