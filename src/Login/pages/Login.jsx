@@ -25,9 +25,9 @@ const Login = () => {
     <div className="login-container">
       <div className="login-box">
         <div className="login-top">
-          <img src={BookIcon} alt="book" />
+            <img src={BookIcon} alt="book" />
+            <img src={headerTitle} alt="서울책장" className="logo" />
           <h4 className="login-comment">책과 우리의 공간</h4>
-          <img src={headerTitle} alt="서울책장" className="logo" />
         </div>
         <div className="login-bottom">
           <button className="google-login-btn" onClick={handleGoogleLogin}>
