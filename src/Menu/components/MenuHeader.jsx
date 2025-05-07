@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./MenuHeader.css";
+import headerTitle from "../../assets/header_title.svg";
 
 const MenuHeader = () => {
   return (
@@ -10,7 +11,7 @@ const MenuHeader = () => {
         </Link>
       </button>
       <Link to="/home" className="header-title-link">
-        <h1 className="header-title">Seoulshelf</h1>
+        <img src={headerTitle} alt="서울책장" className="header-title" />
       </Link>
       <button className="back-button">
         <Link to="/home" className="header-title-link">
