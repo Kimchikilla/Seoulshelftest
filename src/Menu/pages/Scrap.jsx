@@ -82,7 +82,7 @@ const Scrap = () => {
             key={scrap.id}
             scrap={scrap}
             onClick={() => goToDetail(scrap.book_id)}
-            animate={index >= 5} // 5개 이후부터 애니메이션 적용
+            animate={index >= 5} // 5개 이후부터 애니메이션 적용 123
           />
         ))}
         {hasMore && (
