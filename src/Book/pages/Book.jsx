@@ -200,6 +200,7 @@ const Book = () => {
 
         if (response.ok) {
           setIsBookmarked(true);
+          showPopup("읽고 싶어요에 추가되었습니다");
         }
       } else {
         // 읽고 싶어요 취소
@@ -212,10 +213,12 @@ const Book = () => {
 
         if (response.ok) {
           setIsBookmarked(false);
+          showPopup("읽고 싶어요에서 제외되었습니다");
         }
       }
     } catch (error) {
       console.error("Error toggling bookmark status:", error);
+      showPopup("요청 처리 중 오류가 발생했습니다", "error");
     }
   };
 
@@ -242,6 +245,7 @@ const Book = () => {
 
         if (response.ok) {
           setIsRead(true);
+          showPopup("읽은 책에 추가되었습니다");
         }
       } else {
         // 읽었어요 취소
@@ -254,10 +258,12 @@ const Book = () => {
 
         if (response.ok) {
           setIsRead(false);
+          showPopup("읽은 책에서 제외되었습니다");
         }
       }
     } catch (error) {
       console.error("Error toggling read status:", error);
+      showPopup("요청 처리 중 오류가 발생했습니다", "error");
     }
   };
 
@@ -514,11 +520,11 @@ const Book = () => {
         </div>
 
         <div className="action-icons">
-          <button className={`action-button action-button-bookmark ${isBookmarked ? "active" : ""}`} onClick={handleBookmarkClick}>
-            <span className="material-symbols-outlined" style={{ "--fill": isBookmarked ? 1 : 0 }}>
-              bookmark
+          <button className="action-button action-button-bookmark" onClick={handleBookmarkClick}>
+            <span className="material-symbols-outlined">
+              add
             </span>
-            <span className="action-text">{isBookmarked ? "읽고 싶어요" : "읽고 싶어요"}</span>
+            <span className="action-text">읽고 싶어요</span>
           </button>
 
           <button className="action-button action-button-comment" onClick={handleCommentClick}>
@@ -526,8 +532,8 @@ const Book = () => {
             <span className="action-text">코멘트</span>
           </button>
 
-          <button className={`action-button action-button-read ${isRead ? "active" : ""}`} onClick={handleReadClick}>
-            <span className="material-symbols-outlined">{isRead ? "check" : "add"}</span>
+          <button className="action-button action-button-read" onClick={handleReadClick}>
+            <span className="material-symbols-outlined">check</span>
             <span className="action-text">읽었어요</span>
           </button>
         </div>
