@@ -11,17 +11,8 @@
 
 ## 데모 스크린샷
 
-### 로그인 화면
-![로그인 화면](screenshots/login.png)
-
-### 홈 화면
-![홈 화면](screenshots/home.png)
-
-### 도서 상세 화면
-![도서 상세](screenshots/book_detail.png)
-
-### 마이페이지
-![마이페이지](screenshots/mypage.png)
+### 대표 이미지
+![대표 이미지](./서울책장_대표이미지1.png)
 
 ## 주요 기능
 
